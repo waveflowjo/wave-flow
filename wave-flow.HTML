@@ -534,6 +534,7 @@
 
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script>
+    // تهيئة AOS عند تحميل DOM
     document.addEventListener('DOMContentLoaded', function() {
         AOS.init({
             duration: 1000,
@@ -866,6 +867,18 @@
                 wrapper.dispatchEvent(new Event('scroll'));
             }, 50);
         }
+
+        // *************** الحل الجديد لمشكلة الفتح من الأسفل ***************
+        // تأكد من أن الصفحة تفتح دائمًا من الأعلى (top)
+        window.addEventListener('load', () => {
+            window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+            // إذا كان الـ preloader لا يزال مرئياً، فهذه الدالة ستضمن إخفاءه وتهيئة الكاروسيلات.
+            // في معظم الحالات، ستكون الدالة قد تم تشغيلها بالفعل، ولكن هذا يضمن التغطية.
+            if (!preloader.classList.contains('hidden')) {
+                hidePreloaderAndInitializeCarousels();
+            }
+        });
+        // ***************************************************************
     });
 </script>
 </body>
