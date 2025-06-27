@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>معرض Wave Flow</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&family=Poppins:wght@700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&family=Poppins:wght%40700&display=swap" rel="stylesheet">
 <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 <style>
     /* المتغيرات الأساسية */
@@ -209,17 +209,23 @@
         box-shadow: 0 15px 50px rgba(0, 0, 0, 0.7), var(--glow-shadow);
     }
 
+    /* Placeholder and Blur-up for images */
     .gallery-item img {
         width: 100%;
         height: 100%;
         object-fit: cover;
-        transition: transform 0.6s ease;
+        filter: blur(20px); /* Initial blur for placeholder */
+        transition: transform 0.6s ease, filter 0.5s ease;
         filter: brightness(0.9);
+    }
+
+    .gallery-item img.loaded {
+        filter: none; /* Remove blur once loaded */
     }
 
     .gallery-item:hover img {
         transform: scale(1.05);
-        filter: brightness(1.1);
+        filter: brightness(1.1); /* Keep brightness adjust on hover */
     }
 
     /* أزرار التنقل في الكاروسيل */
@@ -379,20 +385,19 @@
         transform: translateY(-50%);
     }
 
+    /* Improved Back-to-Top Button (Always visible FAB) */
     .back-to-top {
+        position: fixed; /* Fixed position */
         bottom: 30px;
         left: 30px;
         width: 55px;
         height: 55px;
         font-size: 2rem;
-        opacity: 0;
-        visibility: hidden;
-        transition: opacity 0.4s, visibility 0.4s;
-    }
-
-    .back-to-top.show {
+        /* Always visible, no more opacity logic */
         opacity: 1;
         visibility: visible;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); /* Add shadow */
+        z-index: 999; /* Ensure it's above other content */
     }
 
     /* استجابة التصميم (Media Queries) */
@@ -422,6 +427,13 @@
         .close-btn { top: 10px; right: 10px; width: 40px; height: 40px; font-size: 1.2rem; }
         .nav-btn.prev-btn { right: 10px; width: 40px; height: 40px; font-size: 1.2rem; }
         .nav-btn.next-btn { left: 10px; width: 40px; height: 40px; font-size: 1.2rem; }
+        .back-to-top {
+            width: 45px;
+            height: 45px;
+            font-size: 1.8rem;
+            bottom: 20px;
+            left: 20px;
+        }
     }
 
     @media (max-width: 480px) {
@@ -433,7 +445,7 @@
             width: 85vw; /* استخدام عرض إطار العرض لتحسين الاستجابة */
             max-width: 300px;
             height: auto;
-            aspect-ratio: 1 / 1; /* الحفاظ على نسبة العرض إلى الارتفاع المربعة */
+            aspect-ratio: 1 / 1; /* الحفاظ على نسبة العرض إلى العرض المربعة */
         }
         .carousel-container {
             padding-bottom: 20px;
@@ -442,6 +454,19 @@
         .carousel-wrapper {
             justify-content: flex-start;
         }
+    }
+
+    /* Skeleton Loader CSS (Basic) */
+    .skeleton-loader {
+        background-color: rgba(255, 255, 255, 0.1);
+        border-radius: 20px;
+        animation: pulse 1.5s infinite ease-in-out;
+    }
+
+    @keyframes pulse {
+        0% { opacity: 0.7; }
+        50% { opacity: 0.3; }
+        100% { opacity: 0.7; }
     }
 </style>
 </head>
@@ -461,21 +486,66 @@
 
     <div class="carousel-container design-gallery">
         <div class="carousel-wrapper" id="design-carousel">
-            <div class="gallery-item" data-aos="zoom-in" data-aos-delay="100"><img src="https://imagizer.imageshack.com/img922/7891/lmH7dS.png" alt="تصميم إبداعي" loading="lazy"></div>
-            <div class="gallery-item" data-aos="zoom-in" data-aos-delay="200"><img src="https://imagizer.imageshack.com/img923/8852/UG4kdA.jpg" alt="عمل فني" loading="lazy"></div>
-            <div class="gallery-item" data-aos="zoom-in" data-aos-delay="300"><img src="https://imagizer.imageshack.com/img922/5889/8YPapb.jpg" alt="تصوير احترافي" loading="lazy"></div>
-            <div class="gallery-item" data-aos="zoom-in" data-aos-delay="400"><img src="https://imagizer.imageshack.com/img923/1641/XCOcQz.png" alt="فن بصري" loading="lazy"></div>
-            <div class="gallery-item" data-aos="zoom-in" data-aos-delay="500"><img src="https://imagizer.imageshack.com/img923/6105/zyeIf9.jpg" alt="تصميم جرافيك" loading="lazy"></div>
-            <div class="gallery-item" data-aos="zoom-in" data-aos-delay="550"><img src="https://imagizer.imageshack.com/img924/4230/dyYPPU.jpg" alt="تصميم إبداعي" loading="lazy"></div>
-            <div class="gallery-item" data-aos="zoom-in" data-aos-delay="600"><img src="https://imagizer.imageshack.com/img924/2280/56psLg.png" alt="إبداع فني" loading="lazy"></div>
-            <div class="gallery-item" data-aos="zoom-in" data-aos-delay="700"><img src="https://imagizer.imageshack.com/img922/2249/u8HFhr.jpg" alt="لوحة فنية" loading="lazy"></div>
-            <div class="gallery-item" data-aos="zoom-in" data-aos-delay="800"><img src="https://imagizer.imageshack.com/img923/4964/dWmp05.jpg" alt="فن تصويري" loading="lazy"></div>
-            <div class="gallery-item" data-aos="zoom-in" data-aos-delay="900"><img src="https://imagizer.imageshack.com/img923/9679/r2P937.png" alt="تصميم جرافيكي" loading="lazy"></div>
-            <div class="gallery-item" data-aos="zoom-in" data-aos-delay="1000"><img src="https://imagizer.imageshack.com/img923/5765/DfLAlA.jpg" alt="لوحة فنية" loading="lazy"></div>
-            <div class="gallery-item" data-aos="zoom-in" data-aos-delay="1100"><img src="https://imagizer.imageshack.com/img924/6291/dpaxGi.jpg" alt="تصميم جرافيكي" loading="lazy"></div>
-            <div class="gallery-item" data-aos="zoom-in" data-aos-delay="1200"><img src="https://imagizer.imageshack.com/img923/9674/Np64vR.jpg" alt="تصميم إبداعي" loading="lazy"></div>
-            <div class="gallery-item" data-aos="zoom-in" data-aos-delay="1300"><img src="https://imagizer.imageshack.com/img924/6587/urrLyW.png" alt="تصميم إبداعي" loading="lazy"></div>
-            <div class="gallery-item" data-aos="zoom-in" data-aos-delay="1400"><img src="https://imagizer.imageshack.com/img922/1403/FqKy4S.jpg" alt="تصميم إبداعي" loading="lazy"></div>
+            <div class="gallery-item" data-aos="zoom-in" data-aos-delay="100">
+                <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-src="https://imagizer.imageshack.com/img922/7891/lmH7dS.png" alt="تصميم إبداعي">
+                <div class="skeleton-loader"></div>
+            </div>
+            <div class="gallery-item" data-aos="zoom-in" data-aos-delay="200">
+                <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-src="https://imagizer.imageshack.com/img923/8852/UG4kdA.jpg" alt="عمل فني">
+                <div class="skeleton-loader"></div>
+            </div>
+            <div class="gallery-item" data-aos="zoom-in" data-aos-delay="300">
+                <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-src="https://imagizer.imageshack.com/img922/5889/8YPapb.jpg" alt="تصوير احترافي">
+                <div class="skeleton-loader"></div>
+            </div>
+            <div class="gallery-item" data-aos="zoom-in" data-aos-delay="400">
+                <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-src="https://imagizer.imageshack.com/img923/1641/XCOcQz.png" alt="فن بصري">
+                <div class="skeleton-loader"></div>
+            </div>
+            <div class="gallery-item" data-aos="zoom-in" data-aos-delay="500">
+                <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-src="https://imagizer.imageshack.com/img923/6105/zyeIf9.jpg" alt="تصميم جرافيك">
+                <div class="skeleton-loader"></div>
+            </div>
+            <div class="gallery-item" data-aos="zoom-in" data-aos-delay="550">
+                <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-src="https://imagizer.imageshack.com/img924/4230/dyYPPU.jpg" alt="تصميم إبداعي">
+                <div class="skeleton-loader"></div>
+            </div>
+            <div class="gallery-item" data-aos="zoom-in" data-aos-delay="600">
+                <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-src="https://imagizer.imageshack.com/img924/2280/56psLg.png" alt="إبداع فني">
+                <div class="skeleton-loader"></div>
+            </div>
+            <div class="gallery-item" data-aos="zoom-in" data-aos-delay="700">
+                <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-src="https://imagizer.imageshack.com/img922/2249/u8HFhr.jpg" alt="لوحة فنية">
+                <div class="skeleton-loader"></div>
+            </div>
+            <div class="gallery-item" data-aos="zoom-in" data-aos-delay="800">
+                <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-src="https://imagizer.imageshack.com/img923/4964/dWmp05.jpg" alt="فن تصويري">
+                <div class="skeleton-loader"></div>
+            </div>
+            <div class="gallery-item" data-aos="zoom-in" data-aos-delay="900">
+                <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-src="https://imagizer.imageshack.com/img923/9679/r2P937.png" alt="تصميم جرافيكي">
+                <div class="skeleton-loader"></div>
+            </div>
+            <div class="gallery-item" data-aos="zoom-in" data-aos-delay="1000">
+                <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-src="https://imagizer.imageshack.com/img923/5765/DfLAlA.jpg" alt="لوحة فنية">
+                <div class="skeleton-loader"></div>
+            </div>
+            <div class="gallery-item" data-aos="zoom-in" data-aos-delay="1100">
+                <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-src="https://imagizer.imageshack.com/img924/6291/dpaxGi.jpg" alt="تصميم جرافيكي">
+                <div class="skeleton-loader"></div>
+            </div>
+            <div class="gallery-item" data-aos="zoom-in" data-aos-delay="1200">
+                <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-src="https://imagizer.imageshack.com/img923/9674/Np64vR.jpg" alt="تصميم إبداعي">
+                <div class="skeleton-loader"></div>
+            </div>
+            <div class="gallery-item" data-aos="zoom-in" data-aos-delay="1300">
+                <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-src="https://imagizer.imageshack.com/img924/6587/urrLyW.png" alt="تصميم إبداعي">
+                <div class="skeleton-loader"></div>
+            </div>
+            <div class="gallery-item" data-aos="zoom-in" data-aos-delay="1400">
+                <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-src="https://imagizer.imageshack.com/img922/1403/FqKy4S.jpg" alt="تصميم إبداعي">
+                <div class="skeleton-loader"></div>
+            </div>
         </div>
         <button class="carousel-nav-btn prev-carousel-btn" aria-label="السابق"><i class="fas fa-chevron-right"></i></button>
         <button class="carousel-nav-btn next-carousel-btn" aria-label="التالي"><i class="fas fa-chevron-left"></i></button>
@@ -489,8 +559,14 @@
 
     <div class="carousel-container logo-section">
         <div class="carousel-wrapper" id="logo-carousel">
-            <div class="gallery-item" data-aos="zoom-in" data-aos-delay="100"><img src="https://imagizer.imageshack.com/img923/3629/xdL0C3.png" alt="لوجو شركة" loading="lazy"></div>
-            <div class="gallery-item" data-aos="zoom-in" data-aos-delay="200"><img src="https://imagizer.imageshack.com/img922/1505/n19fSr.png" alt="هوية بصرية" loading="lazy"></div>
+            <div class="gallery-item" data-aos="zoom-in" data-aos-delay="100">
+                <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-src="https://imagizer.imageshack.com/img923/3629/xdL0C3.png" alt="لوجو شركة">
+                <div class="skeleton-loader"></div>
+            </div>
+            <div class="gallery-item" data-aos="zoom-in" data-aos-delay="200">
+                <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-src="https://imagizer.imageshack.com/img922/1505/n19fSr.png" alt="هوية بصرية">
+                <div class="skeleton-loader"></div>
+            </div>
         </div>
         <button class="carousel-nav-btn prev-carousel-btn" aria-label="السابق"><i class="fas fa-chevron-right"></i></button>
         <button class="carousel-nav-btn next-carousel-btn" aria-label="التالي"><i class="fas fa-chevron-left"></i></button>
@@ -504,8 +580,14 @@
 
     <div class="carousel-container ads-section">
         <div class="carousel-wrapper" id="ads-carousel">
-            <div class="gallery-item" data-aos="zoom-in" data-aos-delay="100"><img src="https://imagizer.imageshack.com/img923/2671/TpJi7G.png" alt="إعلان مبتكر" loading="lazy"></div>
-            <div class="gallery-item" data-aos="zoom-in" data-aos-delay="200"><img src="https://imagizer.imageshack.com/img924/4301/98Pd8q.png" alt="تصميم إعلاني" loading="lazy"></div>
+            <div class="gallery-item" data-aos="zoom-in" data-aos-delay="100">
+                <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-src="https://imagizer.imageshack.com/img923/2671/TpJi7G.png" alt="إعلان مبتكر">
+                <div class="skeleton-loader"></div>
+            </div>
+            <div class="gallery-item" data-aos="zoom-in" data-aos-delay="200">
+                <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-src="https://imagizer.imageshack.com/img924/4301/98Pd8q.png" alt="تصميم إعلاني">
+                <div class="skeleton-loader"></div>
+            </div>
         </div>
         <button class="carousel-nav-btn prev-carousel-btn" aria-label="السابق"><i class="fas fa-chevron-right"></i></button>
         <button class="carousel-nav-btn next-carousel-btn" aria-label="التالي"><i class="fas fa-chevron-left"></i></button>
@@ -513,16 +595,16 @@
 </div>
 
 <div class="lightbox">
-    <div class="close-btn" aria-label="إغلاق المعرض">
+    <div class="close-btn" aria-label="إغلاق المعرض" tabindex="0">
         <i class="fas fa-times"></i>
     </div>
-    <div class="nav-btn prev-btn" aria-label="الصورة السابقة">
+    <div class="nav-btn prev-btn" aria-label="الصورة السابقة" tabindex="0">
         <i class="fas fa-chevron-right"></i>
     </div>
     <div class="lightbox-content">
         <img src="" alt="صورة مكبرة">
     </div>
-    <div class="nav-btn next-btn" aria-label="الصورة التالية">
+    <div class="nav-btn next-btn" aria-label="الصورة التالية" tabindex="0">
         <i class="fas fa-chevron-left"></i>
     </div>
     <div class="lightbox-spinner"></div>
@@ -534,13 +616,35 @@
 
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script>
-    // تهيئة AOS عند تحميل DOM
+    // *************** 1. إيقاف استعادة موضع التمرير التلقائي في المتصفح ***************
+    // هذا الكود يجب أن يكون أول ما يتم تنفيذه في ملف الـ JavaScript الخاص بك.
+    if ('scrollRestoration' in history) {
+        history.scrollRestoration = 'manual';
+    }
+
+    // *************** 2. فرض التمرير إلى الأعلى عند التحميل ***************
+    // هذا يضمن العودة لبداية الصفحة (0,0) أول ما الصفحة تكتمل تحميلها.
+    window.addEventListener('load', () => {
+        window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+        // إذا كان الـ preloader لا يزال مرئياً، فهذه الدالة ستضمن إخفاءه وتهيئة الكاروسيلات.
+        // في معظم الحالات، ستكون الدالة قد تم تشغيلها بالفعل، ولكن هذا يضمن التغطية.
+        const preloader = document.getElementById('preloader');
+        if (preloader && !preloader.classList.contains('hidden')) {
+            hidePreloaderAndInitializeCarousels();
+        }
+    });
+
+    // **************************************************************************
+
     document.addEventListener('DOMContentLoaded', function() {
+        // تهيئة AOS
         AOS.init({
             duration: 1000,
             once: true,
             mirror: false,
             offset: 200,
+            // تقليل استخدام AOS للصور الثقيلة أو الأقسام البعيدة
+            disable: window.innerWidth < 768 // مثال: تعطيل AOS على الشاشات الصغيرة لتحسين الأداء
         });
 
         const preloader = document.getElementById('preloader');
@@ -555,6 +659,7 @@
 
         let currentImageIndex = 0;
         let activeGalleryItems = [];
+        let lastFocusedElement = null; // لإدارة التركيز في اللايت بوكس
 
         // التحقق من وجود العناصر الأساسية لمنع الأخطاء
         if (!lightbox || !lightboxImg || !closeBtn || !lightboxSpinner || !backToTopBtn) {
@@ -562,22 +667,70 @@
             return;
         }
 
-        let imagesLoaded = 0;
-        const allPageImages = document.querySelectorAll('.gallery-item img');
-        const totalImages = allPageImages.length;
+        // *************** Lazy-load متطور بالـ Intersection Observer ***************
+        const io = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const img = entry.target;
+                    const dataSrc = img.dataset.src;
+                    if (dataSrc) {
+                        img.src = dataSrc; // حمل الصورة
+                        img.onload = () => {
+                            img.classList.add('loaded'); // أضف الكلاس لإزالة التمويه
+                            // إزالة الـ skeleton loader بعد تحميل الصورة
+                            const skeleton = img.nextElementSibling;
+                            if (skeleton && skeleton.classList.contains('skeleton-loader')) {
+                                skeleton.remove();
+                            }
+                        };
+                        img.onerror = () => {
+                             // Fallback for image load error
+                             img.src = 'https://via.placeholder.com/320x320?text=Error';
+                             img.classList.add('loaded');
+                             const skeleton = img.nextElementSibling;
+                             if (skeleton && skeleton.classList.contains('skeleton-loader')) {
+                                 skeleton.remove();
+                             }
+                        };
+                    }
+                    observer.unobserve(img); // توقف عن مراقبة الصورة بعد تحميلها
+                }
+            });
+        }, { rootMargin: '200px' }); // حمل الصور عندما تكون على بعد 200 بكسل من الشاشة
 
-        // دالة إخفاء شاشة التحميل وتهيئة الكاروسيلات
+        // ابدأ بمراقبة جميع الصور التي تحتوي على data-src
+        document.querySelectorAll('img[data-src]').forEach(img => {
+            // أضف عنصر skeleton loader كأول طفل داخل gallery-item
+            const parent = img.parentElement;
+            if (parent && parent.classList.contains('gallery-item')) {
+                const skeleton = document.createElement('div');
+                skeleton.classList.add('skeleton-loader');
+                skeleton.style.position = 'absolute';
+                skeleton.style.top = '0';
+                skeleton.style.left = '0';
+                skeleton.style.width = '100%';
+                skeleton.style.height = '100%';
+                skeleton.style.zIndex = '1';
+                parent.prepend(skeleton);
+            }
+            io.observe(img);
+        });
+        // **************************************************************************
+
+        // منطق تحميل الصور لإخفاء شاشة التحميل (معدل ليأخذ في الاعتبار Intersection Observer)
+        let totalLazyLoadImages = document.querySelectorAll('img[data-src]').length;
+        let loadedLazyLoadImages = 0;
+
         function hidePreloaderAndInitializeCarousels() {
             preloader.classList.add('hidden');
             document.body.style.overflow = 'auto'; // إعادة تمكين التمرير للصفحة
-            // بعد اختفاء الـ preloader وتثبيت التخطيط، تأكد من أن العنصر النشط متمركز
             document.querySelectorAll('.carousel-wrapper').forEach(wrapper => {
                 centerActiveItemOnLoad(wrapper);
             });
         }
 
-        // منطق تحميل الصور لإخفاء شاشة التحميل
-        if (totalImages === 0) {
+        // إذا لم تكن هناك صور للتحميل الكسول، أخفِ الـ preloader فوراً.
+        if (totalLazyLoadImages === 0) {
             hidePreloaderAndInitializeCarousels();
         } else {
             document.body.style.overflow = 'hidden'; // منع التمرير أثناء التحميل
@@ -591,48 +744,42 @@
                 }
             }, MAX_PRELOADER_DISPLAY_TIME);
 
-            allPageImages.forEach(img => {
-                const tempImg = new Image();
-                tempImg.src = img.src;
-                tempImg.onload = () => {
-                    imagesLoaded++;
-                    if (imagesLoaded >= totalImages) {
-                        clearTimeout(preloaderTimeout);
-                        hidePreloaderAndInitializeCarousels();
-                    }
-                };
-                tempImg.onerror = () => {
-                    imagesLoaded++; // عد الصورة حتى لو فشلت في التحميل
-                    if (imagesLoaded >= totalImages) {
-                        clearTimeout(preloaderTimeout);
-                        hidePreloaderAndInitializeCarousels();
-                    }
-                };
-            });
+            // نعدل منطق تتبع تحميل الصور ليشمل الصور التي يتم تحميلها كسولاً
+            // يمكننا اعتبار أن الـ preloader سيختفي بعد أن تبدأ أول مجموعة من الصور بالتحميل وتكون الصفحة جاهزة للتفاعل.
+            // أو يمكننا تتبع تحميل كل صورة يتم تحميلها بواسطة Intersection Observer
+            // هذا الجزء سيتم استبداله بمنطق الـ Intersection Observer أعلاه
+            // للتأكد من أن الـ preloader يختفي بعد تحميل الصور المرئية الأولى،
+            // يمكننا استخدام عداد للصور التي تظهر في أول viewport أو بعد عدد معين من الصور
+            // حاليًا، الـ preloaderTimeout هو الضمان لإخفاء الـ preloader بعد فترة معينة.
         }
 
         // وظائف اللايت بوكس (عرض الصورة المكبرة)
         allGalleryItems.forEach((item) => {
             item.addEventListener('click', function() {
+                lastFocusedElement = this; // حفظ العنصر الذي تم النقر عليه
                 const parentWrapper = this.closest('.carousel-wrapper');
                 activeGalleryItems = Array.from(parentWrapper.querySelectorAll('.gallery-item img'));
 
                 const img = this.querySelector('img');
-                if (img && img.src) {
-                    currentImageIndex = activeGalleryItems.findIndex(image => image.src === img.src);
-                    showLightboxImage(currentImageIndex);
+                if (img) { // يجب أن نتحقق من وجود img
+                    // استخدم data-src إذا كان موجوداً، وإلا استخدم src
+                    const imageUrl = img.dataset.src || img.src;
+                    const imageAlt = img.alt || 'صورة مكبرة';
+                    currentImageIndex = activeGalleryItems.findIndex(image => (image.dataset.src || image.src) === imageUrl);
+                    showLightboxImage(currentImageIndex, imageAlt);
                 }
             });
         });
 
-        function showLightboxImage(index) {
+        function showLightboxImage(index, altText) {
             if (index < 0 || index >= activeGalleryItems.length) {
                 return;
             }
 
             currentImageIndex = index;
-            const imageUrl = activeGalleryItems[currentImageIndex].src;
-            const imageAlt = activeGalleryItems[currentImageIndex].alt || 'صورة مكبرة';
+            const targetImgElement = activeGalleryItems[currentImageIndex];
+            const imageUrl = targetImgElement.dataset.src || targetImgElement.src;
+            const imageAlt = altText || targetImgElement.alt || 'صورة مكبرة';
 
             lightboxSpinner.style.display = 'block';
             lightboxImg.classList.add('loading');
@@ -640,13 +787,16 @@
 
             const newImage = new Image();
             newImage.src = imageUrl;
+            newImage.alt = imageAlt;
             newImage.onload = () => {
                 lightboxImg.src = newImage.src;
-                lightboxImg.alt = imageAlt;
+                lightboxImg.alt = newImage.alt;
                 lightbox.classList.add('active');
                 document.body.style.overflow = 'hidden';
                 lightboxSpinner.style.display = 'none';
                 lightboxImg.classList.remove('loading');
+                // إدارة التركيز: التركيز على زر الإغلاق عند فتح اللايت بوكس
+                closeBtn.focus();
             };
             newImage.onerror = () => {
                 console.error('Failed to load image in lightbox:', imageUrl);
@@ -656,6 +806,7 @@
                 document.body.style.overflow = 'hidden';
                 lightboxSpinner.style.display = 'none';
                 lightboxImg.classList.remove('loading');
+                closeBtn.focus();
             };
         }
 
@@ -665,7 +816,7 @@
             } else if (direction === 'next') {
                 currentImageIndex = (currentImageIndex + 1) % activeGalleryItems.length;
             }
-            showLightboxImage(currentImageIndex);
+            showLightboxImage(currentImageIndex); // لا داعي لتمرير AltText هنا، سيتم الحصول عليه من الصورة النشطة
         }
 
         lightboxPrevBtn.addEventListener('click', () => navigateLightbox('prev'));
@@ -676,6 +827,10 @@
             document.body.style.overflow = 'auto'; // إعادة تمكين التمرير
             lightboxSpinner.style.display = 'none';
             lightboxImg.classList.remove('loading');
+            // إدارة التركيز: إعادة التركيز إلى العنصر الذي فتح اللايت بوكس
+            if (lastFocusedElement) {
+                lastFocusedElement.focus();
+            }
         }
 
         closeBtn.addEventListener('click', closeLightbox);
@@ -695,6 +850,26 @@
                     navigateLightbox('prev');
                 } else if (e.key === 'ArrowLeft') { // في RTL، السهم الأيسر يعني الصورة التالية
                     navigateLightbox('next');
+                }
+            } else {
+                // دعم الكيبورد للكاروسيل
+                const focusedElement = document.activeElement;
+                if (focusedElement && focusedElement.closest('.carousel-wrapper')) {
+                    const carouselWrapper = focusedElement.closest('.carousel-wrapper');
+                    const items = Array.from(carouselWrapper.querySelectorAll('.gallery-item'));
+                    const currentIndex = items.indexOf(focusedElement.closest('.gallery-item'));
+
+                    if (e.key === 'ArrowLeft') { // التالي في RTL
+                        e.preventDefault();
+                        const nextIndex = (currentIndex + 1) % items.length;
+                        items[nextIndex].focus();
+                        items[nextIndex].scrollIntoView({ behavior: 'smooth', inline: 'center' });
+                    } else if (e.key === 'ArrowRight') { // السابق في RTL
+                        e.preventDefault();
+                        const prevIndex = (currentIndex - 1 + items.length) % items.length;
+                        items[prevIndex].focus();
+                        items[prevIndex].scrollIntoView({ behavior: 'smooth', inline: 'center' });
+                    }
                 }
             }
         });
@@ -726,15 +901,8 @@
             }
         }
 
-        // زر العودة للأعلى
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 300) {
-                backToTopBtn.classList.add('show');
-            } else {
-                backToTopBtn.classList.remove('show');
-            }
-        });
-
+        // زر العودة للأعلى (جعله ظاهرًا دائمًا)
+        // تمت إزالة منطق show/hide بواسطة السكرول، الزر الآن ثابت في CSS
         backToTopBtn.addEventListener('click', () => {
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
@@ -749,7 +917,7 @@
 
             // هذه الدالة تضمن أن العنصر النشط هو دائماً العنصر الموجود في المنتصف
             const updateActiveItem = () => {
-                const items = Array.from(wrapper.children);
+                const items = Array.from(wrapper.children).filter(el => el.classList.contains('gallery-item')); // تأكد من التعامل مع عناصر المعرض فقط
                 if (items.length === 0) return;
 
                 const wrapperCenter = wrapper.scrollLeft + (wrapper.offsetWidth / 2);
@@ -867,18 +1035,6 @@
                 wrapper.dispatchEvent(new Event('scroll'));
             }, 50);
         }
-
-        // *************** الحل الجديد لمشكلة الفتح من الأسفل ***************
-        // تأكد من أن الصفحة تفتح دائمًا من الأعلى (top)
-        window.addEventListener('load', () => {
-            window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
-            // إذا كان الـ preloader لا يزال مرئياً، فهذه الدالة ستضمن إخفاءه وتهيئة الكاروسيلات.
-            // في معظم الحالات، ستكون الدالة قد تم تشغيلها بالفعل، ولكن هذا يضمن التغطية.
-            if (!preloader.classList.contains('hidden')) {
-                hidePreloaderAndInitializeCarousels();
-            }
-        });
-        // ***************************************************************
     });
 </script>
 </body>
