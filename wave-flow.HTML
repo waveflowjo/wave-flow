@@ -168,7 +168,8 @@
         -ms-overflow-style: none; /* For IE and Edge */
         scrollbar-width: none; /* For Firefox */
         cursor: grab;
-        justify-content: center; /* This helps visually, but JS handles true centering */
+        /* OLD: justify-content: center; /* This helps visually, but JS handles true centering */
+        /* NEW: Start aligned left (or right in RTL) for initial layout, then JS adjusts */
     }
 
     .carousel-wrapper:active {
@@ -466,7 +467,9 @@
             <div class="gallery-item" data-aos="zoom-in" data-aos-delay="1300"><img src="https://imagizer.imageshack.com/img924/6587/urrLyW.png" alt="تصميم إبداعي" loading="lazy"></div>
             <div class="gallery-item" data-aos="zoom-in" data-aos-delay="1400"><img src="https://imagizer.imageshack.com/img922/1403/FqKy4S.jpg" alt="تصميم إبداعي" loading="lazy"></div>
         </div>
-        <button class="carousel-nav-btn prev-carousel-btn" aria-label="السابق"><i class="fas fa-chevron-right"></i></button> <button class="carousel-nav-btn next-carousel-btn" aria-label="التالي"><i class="fas fa-chevron-left"></i></button>  </div>
+        <button class="carousel-nav-btn prev-carousel-btn" aria-label="السابق"><i class="fas fa-chevron-right"></i></button>
+        <button class="carousel-nav-btn next-carousel-btn" aria-label="التالي"><i class="fas fa-chevron-left"></i></button>
+    </div>
 
     <div class="section-divider" data-aos="fade-left" data-aos-offset="150">
         <span class="divider-line"></span>
@@ -504,13 +507,16 @@
         <i class="fas fa-times"></i>
     </div>
     <div class="nav-btn prev-btn" aria-label="الصورة السابقة">
-        <i class="fas fa-chevron-right"></i> </div>
+        <i class="fas fa-chevron-right"></i>
+    </div>
     <div class="lightbox-content">
         <img src="" alt="صورة مكبرة">
     </div>
     <div class="nav-btn next-btn" aria-label="الصورة التالية">
-        <i class="fas fa-chevron-left"></i> </div>
-    <div class="lightbox-spinner"></div> </div>
+        <i class="fas fa-chevron-left"></i>
+    </div>
+    <div class="lightbox-spinner"></div>
+</div>
 
 <button class="back-to-top" aria-label="العودة للأعلى">
     <i class="fas fa-chevron-up"></i>
@@ -533,63 +539,63 @@
         const closeBtn = document.querySelector('.close-btn');
         const lightboxPrevBtn = document.querySelector('.lightbox .nav-btn.prev-btn');
         const lightboxNextBtn = document.querySelector('.lightbox .nav-btn.next-btn');
-        const lightboxSpinner = document.querySelector('.lightbox-spinner'); // Added this element to HTML
+        const lightboxSpinner = document.querySelector('.lightbox-spinner');
         const backToTopBtn = document.querySelector('.back-to-top');
 
         let currentImageIndex = 0;
         let activeGalleryItems = [];
 
-        // Essential element checks for robustness
         if (!lightbox || !lightboxImg || !closeBtn || !lightboxSpinner || !backToTopBtn) {
             console.error('One or more essential elements for the page or lightbox are missing. Please check your HTML structure.');
-            return; // Stop script execution if critical elements are missing
+            return;
         }
 
         let imagesLoaded = 0;
         const allPageImages = document.querySelectorAll('.gallery-item img');
         const totalImages = allPageImages.length;
 
-        function imageLoadedCallback() {
-            imagesLoaded++;
-            if (imagesLoaded >= totalImages) {
-                preloader.classList.add('hidden');
-                document.body.style.overflow = 'auto'; // Allow scrolling after preloader hides
-                initializeCarouselsCenter(); // Center carousels after content loads
-            }
-        }
-
-        // Handle cases where there are no images or to ensure preloader hides
-        if (totalImages === 0) {
+        function hidePreloaderAndInitializeCarousels() {
             preloader.classList.add('hidden');
             document.body.style.overflow = 'auto';
-            initializeCarouselsCenter();
-        } else {
-            document.body.style.overflow = 'hidden'; // Prevent scrolling while loading
+            initializeCarouselsCenter(); // Center carousels after preloader hides
+        }
 
-            // Timeout to hide preloader even if some images fail to load
-            const MAX_PRELOADER_DISPLAY_TIME = 3000; // 3 seconds
-            setTimeout(() => {
+        if (totalImages === 0) {
+            hidePreloaderAndInitializeCarousels();
+        } else {
+            document.body.style.overflow = 'hidden';
+
+            const MAX_PRELOADER_DISPLAY_TIME = 3000;
+            const preloaderTimeout = setTimeout(() => {
                 if (!preloader.classList.contains('hidden')) {
-                    preloader.classList.add('hidden');
-                    document.body.style.overflow = 'auto';
                     console.warn('Preloader hidden due to timeout. Some images might still be loading.');
-                    initializeCarouselsCenter();
+                    hidePreloaderAndInitializeCarousels();
                 }
             }, MAX_PRELOADER_DISPLAY_TIME);
 
             allPageImages.forEach(img => {
-                // Use a temporary image to trigger onload/onerror without changing actual DOM img
                 const tempImg = new Image();
                 tempImg.src = img.src;
-                tempImg.onload = imageLoadedCallback;
-                tempImg.onerror = imageLoadedCallback; // Crucial for cases where image fails
+                tempImg.onload = () => {
+                    imagesLoaded++;
+                    if (imagesLoaded >= totalImages) {
+                        clearTimeout(preloaderTimeout); // Clear timeout if all images load naturally
+                        hidePreloaderAndInitializeCarousels();
+                    }
+                };
+                tempImg.onerror = () => {
+                    imagesLoaded++; // Count even failed images to ensure preloader hides
+                    if (imagesLoaded >= totalImages) {
+                        clearTimeout(preloaderTimeout);
+                        hidePreloaderAndInitializeCarousels();
+                    }
+                };
             });
         }
 
         // Lightbox functionality
         allGalleryItems.forEach((item) => {
             item.addEventListener('click', function() {
-                // Determine which set of images to use for the lightbox based on the clicked carousel
                 const parentWrapper = this.closest('.carousel-wrapper');
                 activeGalleryItems = Array.from(parentWrapper.querySelectorAll('.gallery-item img'));
 
@@ -610,23 +616,23 @@
             const imageUrl = activeGalleryItems[currentImageIndex].src;
             const imageAlt = activeGalleryItems[currentImageIndex].alt || 'صورة مكبرة';
 
-            lightboxSpinner.style.display = 'block'; // Show spinner
-            lightboxImg.classList.add('loading'); // Add loading class for potential CSS effects
-            lightboxImg.src = ''; // Clear previous image
+            lightboxSpinner.style.display = 'block';
+            lightboxImg.classList.add('loading');
+            lightboxImg.src = '';
 
             const newImage = new Image();
             newImage.src = imageUrl;
             newImage.onload = () => {
                 lightboxImg.src = newImage.src;
                 lightboxImg.alt = imageAlt;
-                lightbox.classList.add('active'); // Show lightbox
-                document.body.style.overflow = 'hidden'; // Prevent body scroll
-                lightboxSpinner.style.display = 'none'; // Hide spinner
+                lightbox.classList.add('active');
+                document.body.style.overflow = 'hidden';
+                lightboxSpinner.style.display = 'none';
                 lightboxImg.classList.remove('loading');
             };
             newImage.onerror = () => {
                 console.error('Failed to load image in lightbox:', imageUrl);
-                lightboxImg.src = 'https://via.placeholder.com/600x400?text=Image+failed+to+load'; // Fallback image
+                lightboxImg.src = 'https://via.placeholder.com/600x400?text=Image+failed+to+load';
                 lightboxImg.alt = 'تعذر تحميل الصورة';
                 lightbox.classList.add('active');
                 document.body.style.overflow = 'hidden';
@@ -636,34 +642,31 @@
         }
 
         function navigateLightbox(direction) {
-            if (direction === 'prev') { // In RTL, 'prev' button means moving to an image that appears to the right
+            if (direction === 'prev') {
                 currentImageIndex = (currentImageIndex - 1 + activeGalleryItems.length) % activeGalleryItems.length;
-            } else if (direction === 'next') { // In RTL, 'next' button means moving to an image that appears to the left
+            } else if (direction === 'next') {
                 currentImageIndex = (currentImageIndex + 1) % activeGalleryItems.length;
             }
             showLightboxImage(currentImageIndex);
         }
 
-        // Lightbox Navigation Buttons
         lightboxPrevBtn.addEventListener('click', () => navigateLightbox('prev'));
         lightboxNextBtn.addEventListener('click', () => navigateLightbox('next'));
 
         function closeLightbox() {
             lightbox.classList.remove('active');
-            document.body.style.overflow = 'auto'; // Restore body scroll
-            lightboxSpinner.style.display = 'none'; // Ensure spinner is hidden
+            document.body.style.overflow = 'auto';
+            lightboxSpinner.style.display = 'none';
             lightboxImg.classList.remove('loading');
         }
 
         closeBtn.addEventListener('click', closeLightbox);
-        // Close lightbox if clicking on the semi-transparent background
         lightbox.addEventListener('click', (e) => {
             if (e.target === lightbox || e.target === lightboxImg.parentElement) {
                 closeLightbox();
             }
         });
 
-        // Keyboard navigation for lightbox
         document.addEventListener('keydown', (e) => {
             if (lightbox.classList.contains('active')) {
                 if (e.key === 'Escape') {
@@ -676,7 +679,6 @@
             }
         });
 
-        // Swipe functionality for Lightbox on touch devices
         let touchStartX = 0;
         let touchEndX = 0;
 
@@ -690,21 +692,19 @@
         }, { passive: true });
 
         function handleGesture() {
-            const swipeThreshold = 50; // Minimum distance for a swipe
+            const swipeThreshold = 50;
 
             if (Math.abs(touchEndX - touchStartX) < swipeThreshold) {
-                return; // Not enough movement to be considered a swipe
+                return;
             }
 
             if (touchEndX < touchStartX) { // Swiped left
-                navigateLightbox('next'); // In RTL, swiping left goes to the next image
+                navigateLightbox('next');
             } else if (touchEndX > touchStartX) { // Swiped right
-                navigateLightbox('prev'); // In RTL, swiping right goes to the previous image
+                navigateLightbox('prev');
             }
         }
 
-
-        // Back to Top button functionality
         window.addEventListener('scroll', () => {
             if (window.scrollY > 300) {
                 backToTopBtn.classList.add('show');
@@ -721,15 +721,15 @@
         document.querySelectorAll('.carousel-wrapper').forEach(wrapper => {
             let isDown = false;
             let startX;
-            let scrollLeft;
+            let scrollLeftValue; // Renamed to avoid conflict with scrollLeft method
             let lastScrollTime = 0;
-            const scrollDebounceTime = 100; // milliseconds
+            const scrollDebounceTime = 100;
 
             wrapper.addEventListener('mousedown', (e) => {
                 isDown = true;
                 wrapper.classList.add('active');
                 startX = e.pageX - wrapper.offsetLeft;
-                scrollLeft = wrapper.scrollLeft;
+                scrollLeftValue = wrapper.scrollLeft;
             });
             wrapper.addEventListener('mouseleave', () => {
                 isDown = false;
@@ -743,16 +743,15 @@
                 if (!isDown) return;
                 e.preventDefault();
                 const x = e.pageX - wrapper.offsetLeft;
-                const walk = (x - startX) * 1.5; // Adjusted multiplier for smoother drag
-                wrapper.scrollLeft = scrollLeft - walk;
+                const walk = (x - startX) * 1.5;
+                wrapper.scrollLeft = scrollLeftValue - walk;
             });
 
-            // Touch events for mobile
             wrapper.addEventListener('touchstart', (e) => {
                 isDown = true;
                 startX = e.touches[0].pageX - wrapper.offsetLeft;
-                scrollLeft = wrapper.scrollLeft;
-            }, { passive: true }); // Use passive for better scroll performance
+                scrollLeftValue = wrapper.scrollLeft;
+            }, { passive: true });
             wrapper.addEventListener('touchend', () => {
                 isDown = false;
             }, { passive: true });
@@ -760,31 +759,41 @@
                 if (!isDown) return;
                 const x = e.touches[0].pageX - wrapper.offsetLeft;
                 const walk = (x - startX) * 1.5;
-                wrapper.scrollLeft = scrollLeft - walk;
+                wrapper.scrollLeft = scrollLeftValue - walk;
             }, { passive: true });
 
-            // Logic to apply 'active-item' class based on visible center
             wrapper.addEventListener('scroll', () => {
                 const now = Date.now();
                 if (now - lastScrollTime < scrollDebounceTime) {
-                    return; // Debounce scroll events
+                    return;
                 }
                 lastScrollTime = now;
 
                 const items = Array.from(wrapper.children);
                 if (items.length === 0) return;
 
-                // Calculate the visual center of the *visible* part of the wrapper
-                // In RTL, scrollLeft 0 is the far right. As you scroll left, scrollLeft increases.
-                // The visible left edge is at scrollLeft. The visible right edge is at scrollLeft - wrapper.offsetWidth.
-                // Or simply: the current scroll position relative to the content's origin (far left)
-                const wrapperVisualCenter = (wrapper.scrollWidth - wrapper.offsetWidth) - wrapper.scrollLeft + (wrapper.offsetWidth / 2);
+                // For RTL, the visible center considering scrollLeft
+                // scrollLeft 0 is max right. Max scrollLeft is (scrollWidth - offsetWidth).
+                // So, current position from logical 'start' (left edge of content) is:
+                // (scrollWidth - offsetWidth) - scrollLeft.
+                // We want to find the item closest to the *visual center of the wrapper*.
+                const wrapperVisualCenter = wrapper.scrollLeft + (wrapper.offsetWidth / 2);
+
+                let closestItem = null;
+                let minDistance = Infinity;
 
                 items.forEach(item => {
                     const itemCenter = item.offsetLeft + (item.offsetWidth / 2);
                     const distance = Math.abs(itemCenter - wrapperVisualCenter);
 
-                    if (distance < item.offsetWidth / 2) { // Item center is within half its width from wrapper's center
+                    if (distance < minDistance) {
+                        minDistance = distance;
+                        closestItem = item;
+                    }
+                });
+
+                items.forEach(item => {
+                    if (item === closestItem) {
                         item.classList.add('active-item');
                     } else {
                         item.classList.remove('active-item');
@@ -799,10 +808,9 @@
             if (prevBtn) {
                 prevBtn.addEventListener('click', () => {
                     const currentItemWidth = wrapper.querySelector('.gallery-item')?.offsetWidth || 320;
-                    const gap = 25; // As defined in CSS
+                    const gap = 25;
                     const scrollAmount = currentItemWidth + gap;
-                    // For RTL, clicking 'prev' (which visually implies going right) actually decreases scrollLeft value
-                    // because scrollLeft 0 is max right. So, to go "back" (right), decrease scrollLeft.
+                    // In RTL, "Previous" means moving content right, which is decreasing scrollLeft
                     wrapper.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
                 });
             }
@@ -812,8 +820,7 @@
                     const currentItemWidth = wrapper.querySelector('.gallery-item')?.offsetWidth || 320;
                     const gap = 25;
                     const scrollAmount = currentItemWidth + gap;
-                    // For RTL, clicking 'next' (which visually implies going left) actually increases scrollLeft value
-                    // because scrollLeft 0 is max right. So, to go "next" (left), increase scrollLeft.
+                    // In RTL, "Next" means moving content left, which is increasing scrollLeft
                     wrapper.scrollBy({ left: scrollAmount, behavior: 'smooth' });
                 });
             }
@@ -828,32 +835,29 @@
                 const wrapperWidth = wrapper.offsetWidth;
                 const totalContentWidth = wrapper.scrollWidth;
 
-                // For RTL, scrollLeft = 0 is the far right.
-                // To center the content visually, we need to position the scrollbar at the midpoint
-                // of the *available scrollable area*.
-                // The maximum scrollLeft is `totalContentWidth - wrapperWidth`.
-                // So, the scroll position for centering is half of that maximum scrollLeft.
+                // Calculate the scrollLeft needed to visually center the content.
+                // In RTL, scrollLeft 0 is the far right. The max scrollLeft is (totalContentWidth - wrapperWidth).
+                // We want to scroll to a point where the visual center of the content aligns with the visual center of the wrapper.
                 const centerScrollPosition = (totalContentWidth - wrapperWidth) / 2;
 
-                // For RTL, we actually want to scroll *from the right* towards the *left* to center.
-                // The `scrollLeft` property works by setting the distance from the *left edge of the content*
-                // to the *left edge of the visible area*.
-                // In RTL, the "start" is on the right.
-                // So, if we want the middle of the content to be in the middle of the viewport:
-                // Calculate the pixel position of the actual content center from its *leftmost* edge.
-                // Then calculate the scrollLeft needed for that.
-                // A simpler, more reliable way for RTL centering is often to use the total width
-                // and subtract the viewport width, then divide by 2.
-                // This gives us the point from the "logical start" (right in RTL) to scroll to.
+                // Apply instant scroll
                 wrapper.scrollTo({ left: centerScrollPosition, behavior: 'instant' });
 
-                // Dispatch scroll event to ensure 'active-item' class is applied immediately
-                // Small timeout might be needed for rendering cycle
+                // Manually trigger a scroll event after a tiny delay
+                // This gives the browser a chance to render the new scroll position
+                // before we calculate and apply the 'active-item' class.
                 setTimeout(() => {
                     wrapper.dispatchEvent(new Event('scroll'));
-                }, 50);
+                }, 10); // Very small delay
             });
         }
+
+        // --- New: Immediate Centering on window load for better initial display ---
+        // This runs *after* all images are parsed, but before the preloader timeout in some cases.
+        // It provides a fallback to ensure centering happens as soon as possible.
+        window.addEventListener('load', () => {
+            initializeCarouselsCenter();
+        });
     });
 </script>
 </body>
