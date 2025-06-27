@@ -168,9 +168,19 @@
         -ms-overflow-style: none; /* For IE and Edge */
         scrollbar-width: none; /* For Firefox */
         cursor: grab;
-        /* OLD: justify-content: center; /* This helps visually, but JS handles true centering */
-        /* NEW: Start aligned left (or right in RTL) for initial layout, then JS adjusts */
+        /* NEW CSS for initial centering */
+        justify-content: center; /* This helps center available items initially */
+        align-items: center; /* Vertically center if items have different heights (though ours are same) */
+        padding-inline: 50%; /* This is the key for the initial center trick */
     }
+
+    /* Adjust the items within the wrapper to compensate for the padding */
+    .carousel-wrapper > .gallery-item {
+        flex-shrink: 0; /* Prevent items from shrinking */
+        /* You might not need margin-inline here if your scroll-snap-align is center */
+        /* margin-inline: -50%; */ /* If items were not centered by scroll-snap-align */
+    }
+
 
     .carousel-wrapper:active {
         cursor: grabbing;
@@ -192,7 +202,7 @@
         background: var(--card-bg);
         border: 2px solid var(--card-border);
         box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
-        scroll-snap-align: center;
+        scroll-snap-align: center; /* Ensure items snap to center when scrolled */
         transform: perspective(1000px) scale(0.9);
         opacity: 0.6;
     }
@@ -424,14 +434,32 @@
         .section-title-header h2::after { bottom: -10px; }
         .divider-title { font-size: 1.8rem; padding: 0 10px; }
         .gallery-item {
-            width: 85%; /* Make it responsive to screen width */
-            max-width: 300px; /* But don't exceed a reasonable max */
-            height: 300px;
+            /* Make it responsive to screen width while maintaining aspect ratio and centering */
+            width: 85vw; /* Use viewport width for better responsiveness */
+            max-width: 300px;
+            height: auto; /* Allow height to adjust */
+            aspect-ratio: 1 / 1; /* Maintain square aspect ratio */
+            margin-inline: auto; /* Center individual items within the carousel when there's only one visible */
         }
         .carousel-container {
             padding-bottom: 20px;
         }
         .carousel-nav-btn { display: none; } /* إخفاء أزرار التنقل الرئيسية في العرض الصغير */
+
+        /* Crucial for small screens to ensure true centering */
+        .carousel-wrapper {
+            padding-left: calc(50% - (var(--item-width) / 2)); /* Calculate padding based on item width for perfect center */
+            padding-right: calc(50% - (var(--item-width) / 2));
+            justify-content: flex-start; /* Reset justify-content for precise scroll-snap */
+            scroll-snap-type: x mandatory;
+        }
+
+        .gallery-item {
+             /* Define item width as a CSS variable for calculations */
+            --item-width: 85vw; /* Match this to the width in the gallery-item rule */
+            width: var(--item-width);
+            max-width: 300px; /* Keep max-width as a cap */
+        }
     }
 </style>
 </head>
@@ -557,7 +585,8 @@
         function hidePreloaderAndInitializeCarousels() {
             preloader.classList.add('hidden');
             document.body.style.overflow = 'auto';
-            initializeCarouselsCenter(); // Center carousels after preloader hides
+            // No need to call initializeCarouselsCenter() here, as CSS handles initial centering
+            // And scroll listener will handle active-item after any initial scroll.
         }
 
         if (totalImages === 0) {
@@ -579,12 +608,12 @@
                 tempImg.onload = () => {
                     imagesLoaded++;
                     if (imagesLoaded >= totalImages) {
-                        clearTimeout(preloaderTimeout); // Clear timeout if all images load naturally
+                        clearTimeout(preloaderTimeout);
                         hidePreloaderAndInitializeCarousels();
                     }
                 };
                 tempImg.onerror = () => {
-                    imagesLoaded++; // Count even failed images to ensure preloader hides
+                    imagesLoaded++;
                     if (imagesLoaded >= totalImages) {
                         clearTimeout(preloaderTimeout);
                         hidePreloaderAndInitializeCarousels();
@@ -762,21 +791,12 @@
                 wrapper.scrollLeft = scrollLeftValue - walk;
             }, { passive: true });
 
-            wrapper.addEventListener('scroll', () => {
-                const now = Date.now();
-                if (now - lastScrollTime < scrollDebounceTime) {
-                    return;
-                }
-                lastScrollTime = now;
-
+            // This function ensures the active item is always the one in the center
+            const updateActiveItem = () => {
                 const items = Array.from(wrapper.children);
                 if (items.length === 0) return;
 
                 // For RTL, the visible center considering scrollLeft
-                // scrollLeft 0 is max right. Max scrollLeft is (scrollWidth - offsetWidth).
-                // So, current position from logical 'start' (left edge of content) is:
-                // (scrollWidth - offsetWidth) - scrollLeft.
-                // We want to find the item closest to the *visual center of the wrapper*.
                 const wrapperVisualCenter = wrapper.scrollLeft + (wrapper.offsetWidth / 2);
 
                 let closestItem = null;
@@ -799,7 +819,21 @@
                         item.classList.remove('active-item');
                     }
                 });
+            };
+
+            // Initial call to set active item on load
+            updateActiveItem();
+
+            // Listen for scroll events to update active item
+            wrapper.addEventListener('scroll', () => {
+                const now = Date.now();
+                if (now - lastScrollTime < scrollDebounceTime) {
+                    return;
+                }
+                lastScrollTime = now;
+                updateActiveItem();
             });
+
 
             const container = wrapper.closest('.carousel-container');
             const prevBtn = container.querySelector('.prev-carousel-btn');
@@ -826,37 +860,59 @@
             }
         });
 
-        // Function to center the carousels on page load/image load
-        function initializeCarouselsCenter() {
-            document.querySelectorAll('.carousel-wrapper').forEach(wrapper => {
-                const items = Array.from(wrapper.children);
-                if (items.length === 0) return;
+        // Function to ensure the active item is centered on load
+        // This is primarily for the *initial* state and after preloader hides
+        function centerActiveItemOnLoad(carouselWrapper) {
+            const items = Array.from(carouselWrapper.children);
+            if (items.length === 0) return;
 
-                const wrapperWidth = wrapper.offsetWidth;
-                const totalContentWidth = wrapper.scrollWidth;
+            // Find the active item or assume the first item should be active initially if none are set
+            let activeItem = carouselWrapper.querySelector('.gallery-item.active-item');
+            if (!activeItem) {
+                activeItem = items[0]; // Default to the first item if no active is found
+                activeItem.classList.add('active-item');
+            }
 
-                // Calculate the scrollLeft needed to visually center the content.
-                // In RTL, scrollLeft 0 is the far right. The max scrollLeft is (totalContentWidth - wrapperWidth).
-                // We want to scroll to a point where the visual center of the content aligns with the visual center of the wrapper.
-                const centerScrollPosition = (totalContentWidth - wrapperWidth) / 2;
+            const itemWidth = activeItem.offsetWidth;
+            const itemOffset = activeItem.offsetLeft;
+            const wrapperWidth = carouselWrapper.offsetWidth;
+            const totalContentWidth = carouselWrapper.scrollWidth;
 
-                // Apply instant scroll
-                wrapper.scrollTo({ left: centerScrollPosition, behavior: 'instant' });
+            // Calculate the scroll position needed to center the active item
+            // For RTL, scrollLeft is 0 at the far right.
+            // The itemOffset is relative to the far left of the scrollable content.
+            // We want to bring the activeItem's center to the wrapper's center.
 
-                // Manually trigger a scroll event after a tiny delay
-                // This gives the browser a chance to render the new scroll position
-                // before we calculate and apply the 'active-item' class.
-                setTimeout(() => {
-                    wrapper.dispatchEvent(new Event('scroll'));
-                }, 10); // Very small delay
-            });
+            // The position of the active item's center from the *left* edge of the scrollable content
+            const activeItemCenterFromLeft = itemOffset + (itemWidth / 2);
+
+            // The desired scrollLeft to bring this center to the *visual center* of the wrapper.
+            // If the wrapper starts at 0 (left-to-right logic), it would be: activeItemCenterFromLeft - (wrapperWidth / 2)
+            // But in RTL, scrollLeft is relative to the right.
+            // So, consider the total scrollable width:
+            const desiredScrollLeft = totalContentWidth - activeItemCenterFromLeft - (wrapperWidth / 2);
+
+            carouselWrapper.scrollTo({ left: desiredScrollLeft, behavior: 'instant' });
+
+            // Trigger scroll event to correctly set active item immediately
+            setTimeout(() => {
+                carouselWrapper.dispatchEvent(new Event('scroll'));
+            }, 10);
         }
 
-        // --- New: Immediate Centering on window load for better initial display ---
-        // This runs *after* all images are parsed, but before the preloader timeout in some cases.
-        // It provides a fallback to ensure centering happens as soon as possible.
+        // When the DOM is fully loaded and all images are loaded (or preloader hides by timeout)
         window.addEventListener('load', () => {
-            initializeCarouselsCenter();
+            document.querySelectorAll('.carousel-wrapper').forEach(wrapper => {
+                centerActiveItemOnLoad(wrapper);
+            });
+        });
+
+        // For initial load, make sure the first item is active.
+        document.querySelectorAll('.carousel-wrapper').forEach(wrapper => {
+            const firstItem = wrapper.querySelector('.gallery-item');
+            if (firstItem && !firstItem.classList.contains('active-item')) {
+                firstItem.classList.add('active-item');
+            }
         });
     });
 </script>
