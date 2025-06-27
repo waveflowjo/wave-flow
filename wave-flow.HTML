@@ -8,7 +8,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&family=Poppins:wght@700&display=swap" rel="stylesheet">
 <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 <style>
-
+    /* المتغيرات الأساسية */
     :root {
         --primary-blue: #1C2D43;
         --secondary-blue: #3E8DCF;
@@ -20,26 +20,28 @@
         --glow-shadow: 0 0 15px rgba(62, 141, 207, 0.6);
     }
 
+    /* إعادة تعيين أساسيات المتصفح */
     * {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
     }
 
+    /* إعدادات الجسم (Body) العامة */
     body {
         background: var(--bg-gradient);
         color: var(--text-color-light);
         min-height: 100vh;
-        padding: 20px;
-        direction: rtl; /* Important for RTL */
+        padding: 20px; /* مسافة داخلية من حواف الشاشة */
+        direction: rtl; /* اتجاه النص من اليمين لليسار */
         font-family: 'Cairo', sans-serif;
         line-height: 1.7;
         position: relative;
-        overflow-x: hidden; /* Prevent horizontal scroll on body */
+        overflow-x: hidden; /* منع التمرير الأفقي غير المرغوب فيه */
         background-attachment: fixed;
     }
 
-
+    /* شاشة التحميل (Preloader) */
     #preloader {
         position: fixed;
         top: 0;
@@ -73,14 +75,15 @@
         100% { transform: rotate(360deg); }
     }
 
+    /* حاوية المحتوى الرئيسية (Container) */
     .container {
         max-width: 1400px;
-        margin: 0 auto;
-        padding: 20px;
-        text-align: center;
+        margin: 0 auto; /* هذا هو مفتاح توسيط الصفحة بالكامل أفقياً */
+        padding: 20px; /* للحفاظ على مسافة داخلية */
+        text-align: center; /* لتوسيط المحتوى النصي والصور داخله */
     }
 
-
+    /* رأس القسم والعنوان */
     .section-title-header {
         text-align: center;
         margin-bottom: 60px;
@@ -120,7 +123,7 @@
         color: #A0C4FF;
     }
 
-
+    /* الفواصل بين الأقسام */
     .section-divider {
         display: flex;
         align-items: center;
@@ -148,32 +151,30 @@
         z-index: 1;
     }
 
-
+    /* حاوية الكاروسيل (Carousel Container) */
     .carousel-container {
         position: relative;
         width: 100%;
         overflow: hidden;
         margin-bottom: 50px;
-        /* Added for initial center of the carousel container itself if needed */
         display: flex;
-        justify-content: center;
+        justify-content: center; /* لتوسيط الكاروسيل نفسه داخل الكونتينر */
     }
 
+    /* غلاف الكاروسيل (Carousel Wrapper) */
     .carousel-wrapper {
         display: flex;
         flex-wrap: nowrap;
         gap: 25px;
-        padding: 20px; /* Keep standard padding */
+        padding: 20px; /* مسافة داخلية للعناصر */
         overflow-x: auto;
-        scroll-snap-type: x mandatory;
+        scroll-snap-type: x mandatory; /* لجعل العناصر تستقر في المنتصف */
         -webkit-overflow-scrolling: touch;
-        scroll-behavior: smooth;
-        -ms-overflow-style: none; /* For IE and Edge */
-        scrollbar-width: none; /* For Firefox */
+        scroll-behavior: smooth; /* تمرير سلس عند النقر على الأزرار */
+        -ms-overflow-style: none; /* إخفاء شريط التمرير لـ IE و Edge */
+        scrollbar-width: none; /* إخفاء شريط التمرير لـ Firefox */
         cursor: grab;
-        /* REMOVED: justify-content: center; */
-        /* REMOVED: padding-inline: 50%; */
-        justify-content: flex-start; /* Default for RTL, let JS handle centering */
+        justify-content: flex-start; /* العناصر تبدأ من اليمين في RTL */
     }
 
     .carousel-wrapper:active {
@@ -181,9 +182,10 @@
     }
 
     .carousel-wrapper::-webkit-scrollbar {
-        display: none; /* For Chrome, Safari, and Opera */
+        display: none; /* إخفاء شريط التمرير لـ Chrome و Safari و Opera */
     }
 
+    /* عنصر المعرض (Gallery Item) */
     .gallery-item {
         flex: 0 0 auto;
         width: 320px;
@@ -196,7 +198,7 @@
         background: var(--card-bg);
         border: 2px solid var(--card-border);
         box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
-        scroll-snap-align: center; /* Ensure items snap to center when scrolled */
+        scroll-snap-align: center; /* اجعل العنصر يستقر في منتصف الكاروسيل */
         transform: perspective(1000px) scale(0.9);
         opacity: 0.6;
     }
@@ -220,7 +222,7 @@
         filter: brightness(1.1);
     }
 
-
+    /* أزرار التنقل في الكاروسيل */
     .carousel-nav-btn {
         position: absolute;
         top: 50%;
@@ -247,11 +249,11 @@
         transform: translateY(-50%) scale(1.1);
         opacity: 1;
     }
-    /* Adjusted for RTL: prev is on the right, next is on the left */
+    /* تعديل الأزرار لاتجاه RTL: السابق على اليمين، التالي على اليسار */
     .prev-carousel-btn { right: 10px; }
     .next-carousel-btn { left: 10px; }
 
-
+    /* لوحة المعلومات */
     .info-panel {
         background: var(--card-bg);
         border: 1px solid var(--card-border);
@@ -275,7 +277,7 @@
         color: #a0c4ff;
     }
 
-
+    /* اللايت بوكس (عرض الصورة المكبرة) */
     .lightbox {
         position: fixed;
         top: 0;
@@ -321,7 +323,7 @@
         transform: scale(1);
     }
 
-    /* Spinner for lightbox loading */
+    /* مؤشر التحميل داخل اللايت بوكس */
     .lightbox-spinner {
         position: absolute;
         border: 4px solid rgba(255, 255, 255, 0.3);
@@ -330,11 +332,11 @@
         width: 50px;
         height: 50px;
         animation: spin 1s linear infinite;
-        display: none; /* Hidden by default */
+        display: none; /* مخفي افتراضياً */
         z-index: 1002;
     }
 
-
+    /* أزرار الإغلاق والتنقل والعودة للأعلى */
     .close-btn, .nav-btn, .back-to-top {
         background: rgba(255, 255, 255, 0.1);
         border: 2px solid rgba(255, 255, 255, 0.3);
@@ -365,14 +367,14 @@
         right: 20px;
     }
 
-    /* Lightbox navigation buttons - Adjusted for RTL */
+    /* أزرار تنقل اللايت بوكس - معدلة لـ RTL */
     .nav-btn.prev-btn {
-        right: 20px; /* 'Previous' button is on the right in RTL */
+        right: 20px; /* زر "السابق" على اليمين في RTL */
         top: 50%;
         transform: translateY(-50%);
     }
     .nav-btn.next-btn {
-        left: 20px; /* 'Next' button is on the left in RTL */
+        left: 20px; /* زر "التالي" على اليسار في RTL */
         top: 50%;
         transform: translateY(-50%);
     }
@@ -393,7 +395,7 @@
         visibility: visible;
     }
 
-
+    /* استجابة التصميم (Media Queries) */
     @media (max-width: 992px) {
         .gallery-item {
             width: 280px;
@@ -428,20 +430,16 @@
         .section-title-header h2::after { bottom: -10px; }
         .divider-title { font-size: 1.8rem; padding: 0 10px; }
         .gallery-item {
-            width: 85vw; /* Use viewport width for better responsiveness */
-            max-width: 300px; /* But don't exceed a reasonable max */
-            height: auto; /* Allow height to adjust */
-            aspect-ratio: 1 / 1; /* Maintain square aspect ratio */
-            /* margin-inline: auto; /* Not needed with scroll-snap-align: center on wrapper */
+            width: 85vw; /* استخدام عرض إطار العرض لتحسين الاستجابة */
+            max-width: 300px;
+            height: auto;
+            aspect-ratio: 1 / 1; /* الحفاظ على نسبة العرض إلى الارتفاع المربعة */
         }
         .carousel-container {
             padding-bottom: 20px;
         }
         .carousel-nav-btn { display: none; } /* إخفاء أزرار التنقل الرئيسية في العرض الصغير */
-
-        /* No need for complex padding calculations here, scroll-snap-align and JS will handle it */
         .carousel-wrapper {
-             /* Remove padding-left/right calc and rely on default flex-start behavior */
             justify-content: flex-start;
         }
     }
@@ -557,6 +555,7 @@
         let currentImageIndex = 0;
         let activeGalleryItems = [];
 
+        // التحقق من وجود العناصر الأساسية لمنع الأخطاء
         if (!lightbox || !lightboxImg || !closeBtn || !lightboxSpinner || !backToTopBtn) {
             console.error('One or more essential elements for the page or lightbox are missing. Please check your HTML structure.');
             return;
@@ -566,21 +565,24 @@
         const allPageImages = document.querySelectorAll('.gallery-item img');
         const totalImages = allPageImages.length;
 
+        // دالة إخفاء شاشة التحميل وتهيئة الكاروسيلات
         function hidePreloaderAndInitializeCarousels() {
             preloader.classList.add('hidden');
-            document.body.style.overflow = 'auto';
-            // After preloader hides and layout is stable, ensure active item is centered
+            document.body.style.overflow = 'auto'; // إعادة تمكين التمرير للصفحة
+            // بعد اختفاء الـ preloader وتثبيت التخطيط، تأكد من أن العنصر النشط متمركز
             document.querySelectorAll('.carousel-wrapper').forEach(wrapper => {
                 centerActiveItemOnLoad(wrapper);
             });
         }
 
+        // منطق تحميل الصور لإخفاء شاشة التحميل
         if (totalImages === 0) {
             hidePreloaderAndInitializeCarousels();
         } else {
-            document.body.style.overflow = 'hidden';
+            document.body.style.overflow = 'hidden'; // منع التمرير أثناء التحميل
 
-            const MAX_PRELOADER_DISPLAY_TIME = 3000;
+            // مهلة قصوى لشاشة التحميل لتجنب التعليق
+            const MAX_PRELOADER_DISPLAY_TIME = 3000; // 3 ثوانٍ
             const preloaderTimeout = setTimeout(() => {
                 if (!preloader.classList.contains('hidden')) {
                     console.warn('Preloader hidden due to timeout. Some images might still be loading.');
@@ -599,7 +601,7 @@
                     }
                 };
                 tempImg.onerror = () => {
-                    imagesLoaded++;
+                    imagesLoaded++; // عد الصورة حتى لو فشلت في التحميل
                     if (imagesLoaded >= totalImages) {
                         clearTimeout(preloaderTimeout);
                         hidePreloaderAndInitializeCarousels();
@@ -608,7 +610,7 @@
             });
         }
 
-        // Lightbox functionality
+        // وظائف اللايت بوكس (عرض الصورة المكبرة)
         allGalleryItems.forEach((item) => {
             item.addEventListener('click', function() {
                 const parentWrapper = this.closest('.carousel-wrapper');
@@ -633,7 +635,7 @@
 
             lightboxSpinner.style.display = 'block';
             lightboxImg.classList.add('loading');
-            lightboxImg.src = '';
+            lightboxImg.src = ''; // مسح الصورة القديمة
 
             const newImage = new Image();
             newImage.src = imageUrl;
@@ -647,7 +649,7 @@
             };
             newImage.onerror = () => {
                 console.error('Failed to load image in lightbox:', imageUrl);
-                lightboxImg.src = 'https://via.placeholder.com/600x400?text=Image+failed+to+load';
+                lightboxImg.src = 'https://via.placeholder.com/600x400?text=Image+failed+to+load'; // صورة بديلة
                 lightboxImg.alt = 'تعذر تحميل الصورة';
                 lightbox.classList.add('active');
                 document.body.style.overflow = 'hidden';
@@ -670,30 +672,33 @@
 
         function closeLightbox() {
             lightbox.classList.remove('active');
-            document.body.style.overflow = 'auto';
+            document.body.style.overflow = 'auto'; // إعادة تمكين التمرير
             lightboxSpinner.style.display = 'none';
             lightboxImg.classList.remove('loading');
         }
 
         closeBtn.addEventListener('click', closeLightbox);
+        // إغلاق اللايت بوكس عند النقر خارج الصورة
         lightbox.addEventListener('click', (e) => {
             if (e.target === lightbox || e.target === lightboxImg.parentElement) {
                 closeLightbox();
             }
         });
 
+        // التنقل بالإضاءة باستخدام لوحة المفاتيح
         document.addEventListener('keydown', (e) => {
             if (lightbox.classList.contains('active')) {
                 if (e.key === 'Escape') {
                     closeLightbox();
-                } else if (e.key === 'ArrowRight') { // Right arrow
-                    navigateLightbox('prev'); // In RTL, right arrow means previous image
-                } else if (e.key === 'ArrowLeft') { // Left arrow
-                    navigateLightbox('next'); // In RTL, left arrow means next image
+                } else if (e.key === 'ArrowRight') { // في RTL، السهم الأيمن يعني الصورة السابقة
+                    navigateLightbox('prev');
+                } else if (e.key === 'ArrowLeft') { // في RTL، السهم الأيسر يعني الصورة التالية
+                    navigateLightbox('next');
                 }
             }
         });
 
+        // التنقل بالإضاءة باستخدام السحب (touch gestures)
         let touchStartX = 0;
         let touchEndX = 0;
 
@@ -707,19 +712,20 @@
         }, { passive: true });
 
         function handleGesture() {
-            const swipeThreshold = 50;
+            const swipeThreshold = 50; // مسافة السحب اللازمة لتفعيل التنقل
 
             if (Math.abs(touchEndX - touchStartX) < swipeThreshold) {
                 return;
             }
 
-            if (touchEndX < touchStartX) { // Swiped left
+            if (touchEndX < touchStartX) { // تم السحب لليسار (تُعتبر "التالي" في RTL)
                 navigateLightbox('next');
-            } else if (touchEndX > touchStartX) { // Swiped right
+            } else if (touchEndX > touchStartX) { // تم السحب لليمين (تُعتبر "السابق" في RTL)
                 navigateLightbox('prev');
             }
         }
 
+        // زر العودة للأعلى
         window.addEventListener('scroll', () => {
             if (window.scrollY > 300) {
                 backToTopBtn.classList.add('show');
@@ -732,15 +738,15 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
 
-        // Carousel drag/swipe functionality and active item logic
+        // وظائف الكاروسيل: السحب/التمرير ومنطق العنصر النشط
         document.querySelectorAll('.carousel-wrapper').forEach(wrapper => {
             let isDown = false;
             let startX;
             let scrollLeftValue;
             let lastScrollTime = 0;
-            const scrollDebounceTime = 100;
+            const scrollDebounceTime = 100; // لتقليل استدعاء updateActiveItem
 
-            // This function ensures the active item is always the one in the center
+            // هذه الدالة تضمن أن العنصر النشط هو دائماً العنصر الموجود في المنتصف
             const updateActiveItem = () => {
                 const items = Array.from(wrapper.children);
                 if (items.length === 0) return;
@@ -769,7 +775,7 @@
                 });
             };
 
-            // Event listeners for dragging
+            // مستمعو الأحداث للسحب بالماوس
             wrapper.addEventListener('mousedown', (e) => {
                 isDown = true;
                 wrapper.classList.add('active');
@@ -788,10 +794,11 @@
                 if (!isDown) return;
                 e.preventDefault();
                 const x = e.pageX - wrapper.offsetLeft;
-                const walk = (x - startX) * 1.5;
+                const walk = (x - startX) * 1.5; // سرعة السحب
                 wrapper.scrollLeft = scrollLeftValue - walk;
             });
 
+            // مستمعو الأحداث للسحب باللمس
             wrapper.addEventListener('touchstart', (e) => {
                 isDown = true;
                 startX = e.touches[0].pageX - wrapper.offsetLeft;
@@ -807,7 +814,7 @@
                 wrapper.scrollLeft = scrollLeftValue - walk;
             }, { passive: true });
 
-            // Listen for scroll events to update active item
+            // الاستماع لأحداث التمرير لتحديث العنصر النشط
             wrapper.addEventListener('scroll', () => {
                 const now = Date.now();
                 if (now - lastScrollTime < scrollDebounceTime) {
@@ -817,6 +824,7 @@
                 updateActiveItem();
             });
 
+            // منطق أزرار التنقل في الكاروسيل
             const container = wrapper.closest('.carousel-container');
             const prevBtn = container.querySelector('.prev-carousel-btn');
             const nextBtn = container.querySelector('.next-carousel-btn');
@@ -824,9 +832,9 @@
             if (prevBtn) {
                 prevBtn.addEventListener('click', () => {
                     const currentItemWidth = wrapper.querySelector('.gallery-item')?.offsetWidth || 320;
-                    const gap = 25;
+                    const gap = 25; // المسافة بين العناصر
                     const scrollAmount = currentItemWidth + gap;
-                    // In RTL, "Previous" means moving content right, which is decreasing scrollLeft
+                    // في RTL، "السابق" يعني تحريك المحتوى نحو اليمين (نقصان scrollLeft)
                     wrapper.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
                 });
             }
@@ -836,50 +844,28 @@
                     const currentItemWidth = wrapper.querySelector('.gallery-item')?.offsetWidth || 320;
                     const gap = 25;
                     const scrollAmount = currentItemWidth + gap;
-                    // In RTL, "Next" means moving content left, which is increasing scrollLeft
+                    // في RTL، "التالي" يعني تحريك المحتوى نحو اليسار (زيادة scrollLeft)
                     wrapper.scrollBy({ left: scrollAmount, behavior: 'smooth' });
                 });
             }
         });
 
-        // Function to ensure the active item is centered on load
-        // This is crucial for initial accurate centering.
+        // دالة مبسطة لتوسيط العنصر النشط عند التحميل باستخدام scrollIntoView
         function centerActiveItemOnLoad(wrapper) {
-            const items = Array.from(wrapper.children);
-            if (items.length === 0) return;
+            // اختيار العنصر النشط (إذا كان موجوداً)، أو العنصر الأول افتراضياً
+            const active = wrapper.querySelector('.gallery-item.active-item') || wrapper.querySelector('.gallery-item');
+            if (!active) return; // لا تفعل شيئاً إذا لم يتم العثور على أي عناصر
 
-            // Ensure the first item is active initially
-            let activeItem = items[0];
-            items.forEach(item => item.classList.remove('active-item'));
-            activeItem.classList.add('active-item');
+            // استخدام scrollIntoView لتوسيط العنصر بدقة في المنتصف الأفقي
+            active.scrollIntoView({ behavior: 'instant', inline: 'center' });
 
-            const itemWidth = activeItem.offsetWidth;
-            const itemOffset = activeItem.offsetLeft; // offsetLeft is relative to the content's left edge
-            const wrapperWidth = wrapper.offsetWidth;
-            const totalContentWidth = wrapper.scrollWidth;
-
-            // Calculate the scroll position needed to center the active item
-            // For RTL, scrollLeft is 0 at the far right.
-            // We want the center of the active item to align with the center of the wrapper.
-
-            // The 'logical' center of the active item from the left of the entire scrollable content
-            const activeItemCenterFromLogicalLeft = itemOffset + (itemWidth / 2);
-
-            // The target scrollLeft value for RTL is:
-            // (Total scrollable width - (offset from logical left of active item's center) - (half of wrapper width))
-            const targetScrollLeft = totalContentWidth - activeItemCenterFromLogicalLeft - (wrapperWidth / 2);
-
-            wrapper.scrollTo({ left: targetScrollLeft, behavior: 'instant' });
-
-            // After scrolling, dispatch a scroll event to immediately update the active item's visual state
+            // بعد التمرير الفوري، قم بتشغيل حدث 'scroll' يدوياً
+            // هذا يضمن أن دالة updateActiveItem() تقوم بتحديث الفئة 'active-item' فوراً
+            // (تأخير بسيط لضمان اكتمال عملية scrollIntoView أولاً)
             setTimeout(() => {
                 wrapper.dispatchEvent(new Event('scroll'));
-            }, 50); // Small delay to allow browser to render scroll before calculation
+            }, 50);
         }
-
-        // Call centerActiveItemOnLoad for all carousels once all images are loaded
-        // This ensures proper centering after the preloader hides.
-        // We already have a call to hidePreloaderAndInitializeCarousels which now includes this.
     });
 </script>
 </body>
