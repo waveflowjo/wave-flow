@@ -8,16 +8,16 @@
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&family=Poppins:wght@700&display=swap" rel="stylesheet">
 <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 <style>
-    /* الخطوط والألوان الأساسية (أخف وأكثر هدوءاً) */
+
     :root {
-        --primary-blue: #1C2D43; /* أزرق داكن لطيف */
-        --secondary-blue: #3E8DCF; /* أزرق سماوي */
-        --light-blue: #ffffff; /* أزرق فاتح جداً */
-        --text-color-light: #E0E7FF; /* نص أبيض مائل للأزرق */
-        --bg-gradient: linear-gradient(145deg, #1C2D43 0%, #2A3C56 100%); /* تدرج خلفية ناعم */
+        --primary-blue: #1C2D43; 
+        --secondary-blue: #3E8DCF; 
+        --light-blue: #ffffff; 
+        --text-color-light: #E0E7FF; 
+        --bg-gradient: linear-gradient(145deg, #1C2D43 0%, #2A3C56 100%); 
         --card-bg: rgba(255, 255, 255, 0.08);
         --card-border: rgba(255, 255, 255, 0.15);
-        --glow-shadow: 0 0 15px rgba(62, 141, 207, 0.6); /* ظل هادئ */
+        --glow-shadow: 0 0 15px rgba(62, 141, 207, 0.6); 
     }
 
     * {
@@ -31,7 +31,7 @@
         color: var(--text-color-light);
         min-height: 100vh;
         padding: 20px;
-        direction: rtl;
+        direction: rtl; 
         font-family: 'Cairo', sans-serif;
         line-height: 1.7;
         position: relative;
@@ -39,7 +39,7 @@
         background-attachment: fixed;
     }
 
-    /* شاشة التحميل (Preloader) */
+
     #preloader {
         position: fixed;
         top: 0;
@@ -80,7 +80,7 @@
         text-align: center;
     }
 
-    /* عنوان القسم بدلاً من العنوان الرئيسي */
+
     .section-title-header {
         text-align: center;
         margin-bottom: 60px;
@@ -120,7 +120,7 @@
         color: #A0C4FF;
     }
 
-    /* خطوط التقسيم */
+
     .section-divider {
         display: flex;
         align-items: center;
@@ -148,7 +148,7 @@
         z-index: 1;
     }
 
-    /* معرض الصور بنمط Carousel */
+
     .carousel-container {
         position: relative;
         width: 100%;
@@ -167,11 +167,12 @@
         scroll-behavior: smooth;
         -ms-overflow-style: none;
         scrollbar-width: none;
-        cursor: grab; /* مؤشر سحب */
+        cursor: grab; 
+        justify-content: center; 
     }
 
     .carousel-wrapper:active {
-        cursor: grabbing; /* مؤشر سحب أثناء الضغط */
+        cursor: grabbing;
     }
 
     .carousel-wrapper::-webkit-scrollbar {
@@ -181,7 +182,7 @@
     .gallery-item {
         flex: 0 0 auto;
         width: 320px;
-        height: 320px; /* تم تعديل الارتفاع ليصبح مربعًا */
+        height: 320px;
         position: relative;
         border-radius: 20px;
         overflow: hidden;
@@ -190,7 +191,7 @@
         background: var(--card-bg);
         border: 2px solid var(--card-border);
         box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
-        scroll-snap-align: center;
+        scroll-snap-align: center; 
         transform: perspective(1000px) scale(0.9);
         opacity: 0.6;
     }
@@ -204,7 +205,7 @@
     .gallery-item img {
         width: 100%;
         height: 100%;
-        object-fit: cover; /* لضمان ملء الصورة للمربع مع الحفاظ على الأبعاد */
+        object-fit: cover; 
         transition: transform 0.6s ease;
         filter: brightness(0.9);
     }
@@ -214,7 +215,7 @@
         filter: brightness(1.1);
     }
 
-    /* أزرار التنقل في الـ Carousel */
+
     .carousel-nav-btn {
         position: absolute;
         top: 50%;
@@ -242,10 +243,10 @@
         opacity: 1;
     }
 
-    .prev-carousel-btn { left: 10px; }
-    .next-carousel-btn { right: 10px; }
+    .prev-carousel-btn { right: 10px; } 
+    .next-carousel-btn { left: 10px; }  
 
-    /* لوحات المعلومات */
+
     .info-panel {
         background: var(--card-bg);
         border: 1px solid var(--card-border);
@@ -269,7 +270,7 @@
         color: #a0c4ff;
     }
 
-    /* Lightbox */
+
     .lightbox {
         position: fixed;
         top: 0;
@@ -291,21 +292,31 @@
         visibility: visible;
     }
 
-    .lightbox-content img {
+    .lightbox-content {
+        position: relative; 
         max-width: 90%;
+        max-height: 85vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .lightbox-content img {
+        max-width: 100%; 
         max-height: 85vh;
         border-radius: 15px;
         box-shadow: 0 20px 80px rgba(0, 0, 0, 0.8);
         transform: scale(0.8);
         transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         border: 3px solid var(--secondary-blue);
+        object-fit: contain; 
     }
 
     .lightbox.active .lightbox-content img {
         transform: scale(1);
     }
 
-    /* الأزرار */
+
     .close-btn, .nav-btn, .back-to-top {
         background: rgba(255, 255, 255, 0.1);
         border: 2px solid rgba(255, 255, 255, 0.3);
@@ -336,8 +347,17 @@
         right: 20px;
     }
 
-    .nav-btn.prev-btn { left: 20px; top: 50%; transform: translateY(-50%); }
-    .nav-btn.next-btn { right: 20px; top: 50%; transform: translateY(-50%); }
+
+    .nav-btn.prev-btn { 
+        right: 20px; 
+        top: 50%; 
+        transform: translateY(-50%); 
+    } 
+    .nav-btn.next-btn { 
+        left: 20px; 
+        top: 50%; 
+        transform: translateY(-50%); 
+    } 
 
     .back-to-top {
         bottom: 30px;
@@ -355,11 +375,11 @@
         visibility: visible;
     }
 
-    /* Media Queries */
+
     @media (max-width: 992px) {
         .gallery-item {
             width: 280px;
-            height: 280px; /* تم تعديل الارتفاع */
+            height: 280px; 
         }
     }
     @media (max-width: 768px) {
@@ -372,14 +392,16 @@
         }
         .gallery-item {
             width: 250px;
-            height: 250px; /* تم تعديل الارتفاع */
+            height: 250px;
         }
         .carousel-nav-btn {
             width: 40px;
             height: 40px;
             font-size: 1.2rem;
         }
-        .nav-btn, .close-btn { width: 45px; height: 45px; font-size: 1.2rem; }
+        .close-btn { top: 10px; right: 10px; width: 40px; height: 40px; font-size: 1.2rem; }
+        .nav-btn.prev-btn { right: 10px; width: 40px; height: 40px; font-size: 1.2rem; }
+        .nav-btn.next-btn { left: 10px; width: 40px; height: 40px; font-size: 1.2rem; }
     }
 
     @media (max-width: 480px) {
@@ -390,12 +412,12 @@
         .gallery-item {
             width: 85%;
             max-width: 300px;
-            height: 300px; /* تم تعديل الارتفاع */
+            height: 300px;
         }
         .carousel-container {
             padding-bottom: 20px;
         }
-        .carousel-nav-btn { display: none; }
+        .carousel-nav-btn { display: none; } /* إخفاء أزرار التنقل الرئيسية في العرض الصغير */
     }
 </style>
 </head>
@@ -406,79 +428,80 @@
 </div>
 
 <div class="container">
-<header class="section-title-header">
-<h2 data-aos="fade-down" data-aos-duration="1200">Wave Flow</h2>
-<p class="intro" data-aos="fade-up" data-aos-delay="300">
-نقدم لكم معرضاً لأعمالنا في التصميم، التصوير، وتطوير الهوية البصرية. رؤيتنا هي تحويل الأفكار إلى إبداعات بصرية لا تُنسى.
-</p>
-</header>
+    <header class="section-title-header">
+        <h2 data-aos="fade-down" data-aos-duration="1200">Wave Flow</h2>
+        <p class="intro" data-aos="fade-up" data-aos-delay="300">
+            نقدم لكم معرضاً لأعمالنا في التصميم، التصوير، وتطوير الهوية البصرية. رؤيتنا هي تحويل الأفكار إلى إبداعات بصرية لا تُنسى.
+        </p>
+    </header>
 
-
-
-<div class="carousel-container design-gallery">
-    <div class="carousel-wrapper" id="design-carousel">
-      <div class="gallery-item" data-aos="zoom-in" data-aos-delay="100"><img src="https://imagizer.imageshack.com/img922/7891/lmH7dS.png" alt="تصميم إبداعي" loading="lazy"></div>
-      <div class="gallery-item" data-aos="zoom-in" data-aos-delay="200"><img src="https://imagizer.imageshack.com/img923/8852/UG4kdA.jpg" alt="عمل فني" loading="lazy"></div>
-      <div class="gallery-item" data-aos="zoom-in" data-aos-delay="300"><img src="https://imagizer.imageshack.com/img922/5889/8YPapb.jpg" alt="تصوير احترافي" loading="lazy"></div>
-      <div class="gallery-item" data-aos="zoom-in" data-aos-delay="400"><img src="https://imagizer.imageshack.com/img923/1641/XCOcQz.png" alt="فن بصري" loading="lazy"></div>
-      <div class="gallery-item" data-aos="zoom-in" data-aos-delay="500"><img src="https://imagizer.imageshack.com/img923/6105/zyeIf9.jpg" alt="تصميم جرافيك" loading="lazy"></div>
-      <div class="gallery-item" data-aos="zoom-in" data-aos-delay="550"><img src="https://imagizer.imageshack.com/img924/4230/dyYPPU.jpg" alt="تصميم إبداعي" loading="lazy"></div>
-      <div class="gallery-item" data-aos="zoom-in" data-aos-delay="600"><img src="https://imagizer.imageshack.com/img924/2280/56psLg.png" alt="إبداع فني" loading="lazy"></div>
-      <div class="gallery-item" data-aos="zoom-in" data-aos-delay="700"><img src="https://imagizer.imageshack.com/img922/2249/u8HFhr.jpg" alt="لوحة فنية" loading="lazy"></div>
-      <div class="gallery-item" data-aos="zoom-in" data-aos-delay="800"><img src="https://imagizer.imageshack.com/img923/4964/dWmp05.jpg" alt="فن تصويري" loading="lazy"></div>
-      <div class="gallery-item" data-aos="zoom-in" data-aos-delay="900"><img src="https://imagizer.imageshack.com/img923/9679/r2P937.png" alt="تصميم جرافيكي" loading="lazy"></div>
-      <div class="gallery-item" data-aos="zoom-in" data-aos-delay="1000"><img src="https://imagizer.imageshack.com/img923/5765/DfLAlA.jpg" alt="لوحة فنية" loading="lazy"></div>
-      <div class="gallery-item" data-aos="zoom-in" data-aos-delay="1100"><img src="https://imagizer.imageshack.com/img924/6291/dpaxGi.jpg" alt="تصميم جرافيكي" loading="lazy"></div>
-      <div class="gallery-item" data-aos="zoom-in" data-aos-delay="1200"><img src="https://imagizer.imageshack.com/img923/9674/Np64vR.jpg" alt="تصميم إبداعي" loading="lazy"></div>
-      <div class="gallery-item" data-aos="zoom-in" data-aos-delay="1300"><img src="https://imagizer.imageshack.com/img924/6587/urrLyW.png" alt="تصميم إبداعي" loading="lazy"></div>
-      <div class="gallery-item" data-aos="zoom-in" data-aos-delay="1400"><img src="https://imagizer.imageshack.com/img922/1403/FqKy4S.jpg" alt="تصميم إبداعي" loading="lazy"></div>
+    <div class="carousel-container design-gallery">
+        <div class="carousel-wrapper" id="design-carousel">
+            <div class="gallery-item" data-aos="zoom-in" data-aos-delay="100"><img src="https://imagizer.imageshack.com/img922/7891/lmH7dS.png" alt="تصميم إبداعي" loading="lazy"></div>
+            <div class="gallery-item" data-aos="zoom-in" data-aos-delay="200"><img src="https://imagizer.imageshack.com/img923/8852/UG4kdA.jpg" alt="عمل فني" loading="lazy"></div>
+            <div class="gallery-item" data-aos="zoom-in" data-aos-delay="300"><img src="https://imagizer.imageshack.com/img922/5889/8YPapb.jpg" alt="تصوير احترافي" loading="lazy"></div>
+            <div class="gallery-item" data-aos="zoom-in" data-aos-delay="400"><img src="https://imagizer.imageshack.com/img923/1641/XCOcQz.png" alt="فن بصري" loading="lazy"></div>
+            <div class="gallery-item" data-aos="zoom-in" data-aos-delay="500"><img src="https://imagizer.imageshack.com/img923/6105/zyeIf9.jpg" alt="تصميم جرافيك" loading="lazy"></div>
+            <div class="gallery-item" data-aos="zoom-in" data-aos-delay="550"><img src="https://imagizer.imageshack.com/img924/4230/dyYPPU.jpg" alt="تصميم إبداعي" loading="lazy"></div>
+            <div class="gallery-item" data-aos="zoom-in" data-aos-delay="600"><img src="https://imagizer.imageshack.com/img924/2280/56psLg.png" alt="إبداع فني" loading="lazy"></div>
+            <div class="gallery-item" data-aos="zoom-in" data-aos-delay="700"><img src="https://imagizer.imageshack.com/img922/2249/u8HFhr.jpg" alt="لوحة فنية" loading="lazy"></div>
+            <div class="gallery-item" data-aos="zoom-in" data-aos-delay="800"><img src="https://imagizer.imageshack.com/img923/4964/dWmp05.jpg" alt="فن تصويري" loading="lazy"></div>
+            <div class="gallery-item" data-aos="zoom-in" data-aos-delay="900"><img src="https://imagizer.imageshack.com/img923/9679/r2P937.png" alt="تصميم جرافيكي" loading="lazy"></div>
+            <div class="gallery-item" data-aos="zoom-in" data-aos-delay="1000"><img src="https://imagizer.imageshack.com/img923/5765/DfLAlA.jpg" alt="لوحة فنية" loading="lazy"></div>
+            <div class="gallery-item" data-aos="zoom-in" data-aos-delay="1100"><img src="https://imagizer.imageshack.com/img924/6291/dpaxGi.jpg" alt="تصميم جرافيكي" loading="lazy"></div>
+            <div class="gallery-item" data-aos="zoom-in" data-aos-delay="1200"><img src="https://imagizer.imageshack.com/img923/9674/Np64vR.jpg" alt="تصميم إبداعي" loading="lazy"></div>
+            <div class="gallery-item" data-aos="zoom-in" data-aos-delay="1300"><img src="https://imagizer.imageshack.com/img924/6587/urrLyW.png" alt="تصميم إبداعي" loading="lazy"></div>
+            <div class="gallery-item" data-aos="zoom-in" data-aos-delay="1400"><img src="https://imagizer.imageshack.com/img922/1403/FqKy4S.jpg" alt="تصميم إبداعي" loading="lazy"></div>
+        </div>
+        <button class="carousel-nav-btn prev-carousel-btn" aria-label="السابق"><i class="fas fa-chevron-left"></i></button>
+        <button class="carousel-nav-btn next-carousel-btn" aria-label="التالي"><i class="fas fa-chevron-right"></i></button>
     </div>
-    <button class="carousel-nav-btn prev-carousel-btn" aria-label="السابق"><i class="fas fa-chevron-right"></i></button>
-    <button class="carousel-nav-btn next-carousel-btn" aria-label="التالي"><i class="fas fa-chevron-left"></i></button>
-</div>
 
-<div class="section-divider" data-aos="fade-left" data-aos-offset="150">
-    <span class="divider-line"></span>
-    <h2 class="divider-title">لوجوهات مميزة</h2>
-    <span class="divider-line"></span>
-</div>
-
-
-<div class="carousel-container logo-section">
-    <div class="carousel-wrapper" id="logo-carousel">
-        <div class="gallery-item" data-aos="zoom-in" data-aos-delay="100"><img src="https://imagizer.imageshack.com/img923/3629/xdL0C3.png" alt="لوجو شركة" loading="lazy"></div>
-        <div class="gallery-item" data-aos="zoom-in" data-aos-delay="200"><img src="https://imagizer.imageshack.com/img922/1505/n19fSr.png" alt="هوية بصرية" loading="lazy"></div>
+    <div class="section-divider" data-aos="fade-left" data-aos-offset="150">
+        <span class="divider-line"></span>
+        <h2 class="divider-title">لوجوهات مميزة</h2>
+        <span class="divider-line"></span>
     </div>
-    <button class="carousel-nav-btn prev-carousel-btn" aria-label="السابق"><i class="fas fa-chevron-right"></i></button>
-    <button class="carousel-nav-btn next-carousel-btn" aria-label="التالي"><i class="fas fa-chevron-left"></i></button>
-</div>
 
-<div class="section-divider" data-aos="fade-right" data-aos-offset="150">
-    <span class="divider-line"></span>
-    <h2 class="divider-title">إعلانات جذابة</h2>
-    <span class="divider-line"></span>
-</div>
-
-
-
-<div class="carousel-container ads-section">
-    <div class="carousel-wrapper" id="ads-carousel">
-        <div class="gallery-item" data-aos="zoom-in" data-aos-delay="100"><img src="https://imagizer.imageshack.com/img923/2671/TpJi7G.png" alt="إعلان مبتكر" loading="lazy"></div>
-        <div class="gallery-item" data-aos="zoom-in" data-aos-delay="200"><img src="https://imagizer.imageshack.com/img924/4301/98Pd8q.png" alt="تصميم إعلاني" loading="lazy"></div>
+    <div class="carousel-container logo-section">
+        <div class="carousel-wrapper" id="logo-carousel">
+            <div class="gallery-item" data-aos="zoom-in" data-aos-delay="100"><img src="https://imagizer.imageshack.com/img923/3629/xdL0C3.png" alt="لوجو شركة" loading="lazy"></div>
+            <div class="gallery-item" data-aos="zoom-in" data-aos-delay="200"><img src="https://imagizer.imageshack.com/img922/1505/n19fSr.png" alt="هوية بصرية" loading="lazy"></div>
+        </div>
+        <button class="carousel-nav-btn prev-carousel-btn" aria-label="السابق"><i class="fas fa-chevron-left"></i></button>
+        <button class="carousel-nav-btn next-carousel-btn" aria-label="التالي"><i class="fas fa-chevron-right"></i></button>
     </div>
-    <button class="carousel-nav-btn prev-carousel-btn" aria-label="السابق"><i class="fas fa-chevron-right"></i></button>
-    <button class="carousel-nav-btn next-carousel-btn" aria-label="التالي"><i class="fas fa-chevron-left"></i></button>
-</div>
+
+    <div class="section-divider" data-aos="fade-right" data-aos-offset="150">
+        <span class="divider-line"></span>
+        <h2 class="divider-title">إعلانات جذابة</h2>
+        <span class="divider-line"></span>
+    </div>
+
+    <div class="carousel-container ads-section">
+        <div class="carousel-wrapper" id="ads-carousel">
+            <div class="gallery-item" data-aos="zoom-in" data-aos-delay="100"><img src="https://imagizer.imageshack.com/img923/2671/TpJi7G.png" alt="إعلان مبتكر" loading="lazy"></div>
+            <div class="gallery-item" data-aos="zoom-in" data-aos-delay="200"><img src="https://imagizer.imageshack.com/img924/4301/98Pd8q.png" alt="تصميم إعلاني" loading="lazy"></div>
+        </div>
+        <button class="carousel-nav-btn prev-carousel-btn" aria-label="السابق"><i class="fas fa-chevron-left"></i></button>
+        <button class="carousel-nav-btn next-carousel-btn" aria-label="التالي"><i class="fas fa-chevron-right"></i></button>
+    </div>
 </div>
 
 <div class="lightbox">
-<div class="close-btn" aria-label="إغلاق المعرض">
-<i class="fas fa-times"></i>
-</div>
-<div class="lightbox-content">
-<img src="" alt="صورة مكبرة">
-</div>
-<div class="lightbox-spinner"></div>
+    <div class="close-btn" aria-label="إغلاق المعرض">
+        <i class="fas fa-times"></i>
+    </div>
+    <div class="nav-btn prev-btn" aria-label="الصورة السابقة">
+        <i class="fas fa-chevron-right"></i>
+    </div>
+    <div class="lightbox-content">
+        <img src="" alt="صورة مكبرة">
+    </div>
+    <div class="nav-btn next-btn" aria-label="الصورة التالية">
+        <i class="fas fa-chevron-left"></i>
+    </div>
+    <div class="lightbox-spinner"></div>
 </div>
 
 <button class="back-to-top" aria-label="العودة للأعلى">
@@ -500,36 +523,36 @@
         const lightbox = document.querySelector('.lightbox');
         const lightboxImg = document.querySelector('.lightbox-content img');
         const closeBtn = document.querySelector('.close-btn');
+        const lightboxPrevBtn = document.querySelector('.lightbox .nav-btn.prev-btn');
+        const lightboxNextBtn = document.querySelector('.lightbox .nav-btn.next-btn');
         const lightboxSpinner = document.querySelector('.lightbox-spinner');
         const backToTopBtn = document.querySelector('.back-to-top');
 
-        let allGalleryImages = [];
+        let currentImageIndex = 0;
+        let activeGalleryItems = []; 
 
         if (!lightbox || !lightboxImg || !closeBtn || !lightboxSpinner) {
             console.error('Some lightbox elements are missing.');
             return;
         }
 
-        document.querySelectorAll('.gallery-item img').forEach(img => {
-            if (img.src) {
-                allGalleryImages.push(img.src);
-            }
-        });
-
         let imagesLoaded = 0;
-        const totalImages = allGalleryImages.length;
+        const allPageImages = document.querySelectorAll('.gallery-item img');
+        const totalImages = allPageImages.length;
 
-        function imageLoaded() {
+        function imageLoadedCallback() {
             imagesLoaded++;
             if (imagesLoaded >= totalImages) {
                 preloader.classList.add('hidden');
                 document.body.style.overflow = 'auto';
+                initializeCarouselsCenter(); 
             }
         }
 
         if (totalImages === 0) {
             preloader.classList.add('hidden');
             document.body.style.overflow = 'auto';
+            initializeCarouselsCenter(); 
         } else {
             document.body.style.overflow = 'hidden';
             const MAX_PRELOADER_DISPLAY_TIME = 3000;
@@ -538,46 +561,79 @@
                     preloader.classList.add('hidden');
                     document.body.style.overflow = 'auto';
                     console.warn('Preloader hidden due to timeout, some images might still be loading.');
+                    initializeCarouselsCenter();
                 }
             }, MAX_PRELOADER_DISPLAY_TIME);
 
-            allGalleryImages.forEach(src => {
-                const img = new Image();
-                img.src = src;
-                img.onload = imageLoaded;
-                img.onerror = imageLoaded;
+            allPageImages.forEach(img => {
+                const tempImg = new Image();
+                tempImg.src = img.src;
+                tempImg.onload = imageLoadedCallback;
+                tempImg.onerror = imageLoadedCallback;
             });
         }
 
-        allGalleryItems.forEach((item) => {
+        // Lightbox functionality
+        allGalleryItems.forEach((item, index) => {
             item.addEventListener('click', function() {
+                // Determine which set of images to use for the lightbox based on the clicked carousel
+                const parentWrapper = this.closest('.carousel-wrapper');
+                activeGalleryItems = Array.from(parentWrapper.querySelectorAll('.gallery-item img'));
+                
                 const img = this.querySelector('img');
                 if (img && img.src) {
-                    lightboxSpinner.style.display = 'block';
-                    lightboxImg.classList.add('loading');
-                    lightboxImg.src = '';
-                    const newImage = new Image();
-                    newImage.src = img.src;
-                    newImage.onload = () => {
-                        lightboxImg.src = newImage.src;
-                        lightboxImg.alt = img.alt || 'Enlarged image';
-                        lightbox.classList.add('active');
-                        document.body.style.overflow = 'hidden';
-                        lightboxSpinner.style.display = 'none';
-                        lightboxImg.classList.remove('loading');
-                    };
-                    newImage.onerror = () => {
-                        console.error('Failed to load image in lightbox:', img.src);
-                        lightboxImg.src = 'https://via.placeholder.com/600x400?text=Image+failed+to+load';
-                        lightboxImg.alt = 'Image failed to load';
-                        lightbox.classList.add('active');
-                        document.body.style.overflow = 'hidden';
-                        lightboxSpinner.style.display = 'none';
-                        lightboxImg.classList.remove('loading');
-                    };
+                    currentImageIndex = activeGalleryItems.findIndex(image => image.src === img.src);
+                    showLightboxImage(currentImageIndex);
                 }
             });
         });
+
+        function showLightboxImage(index) {
+            if (index < 0 || index >= activeGalleryItems.length) {
+                return;
+            }
+
+            currentImageIndex = index;
+            const imageUrl = activeGalleryItems[currentImageIndex].src;
+            const imageAlt = activeGalleryItems[currentImageIndex].alt || 'Enlarged image';
+
+            lightboxSpinner.style.display = 'block';
+            lightboxImg.classList.add('loading');
+            lightboxImg.src = '';
+
+            const newImage = new Image();
+            newImage.src = imageUrl;
+            newImage.onload = () => {
+                lightboxImg.src = newImage.src;
+                lightboxImg.alt = imageAlt;
+                lightbox.classList.add('active');
+                document.body.style.overflow = 'hidden';
+                lightboxSpinner.style.display = 'none';
+                lightboxImg.classList.remove('loading');
+            };
+            newImage.onerror = () => {
+                console.error('Failed to load image in lightbox:', imageUrl);
+                lightboxImg.src = 'https://via.placeholder.com/600x400?text=Image+failed+to+load';
+                lightboxImg.alt = 'Image failed to load';
+                lightbox.classList.add('active');
+                document.body.style.overflow = 'hidden';
+                lightboxSpinner.style.display = 'none';
+                lightboxImg.classList.remove('loading');
+            };
+        }
+
+        function navigateLightbox(direction) {
+            if (direction === 'prev') {
+                currentImageIndex = (currentImageIndex - 1 + activeGalleryItems.length) % activeGalleryItems.length;
+            } else if (direction === 'next') {
+                currentImageIndex = (currentImageIndex + 1) % activeGalleryItems.length;
+            }
+            showLightboxImage(currentImageIndex);
+        }
+
+        // Lightbox Nav Buttons
+        lightboxPrevBtn.addEventListener('click', () => navigateLightbox('prev'));
+        lightboxNextBtn.addEventListener('click', () => navigateLightbox('next'));
 
         function closeLightbox() {
             lightbox.classList.remove('active');
@@ -588,16 +644,63 @@
 
         closeBtn.addEventListener('click', closeLightbox);
         lightbox.addEventListener('click', (e) => {
-            if (e.target === lightbox) {
+            // Close lightbox only if clicking on the background, not on the image or nav buttons
+            if (e.target === lightbox || e.target === lightboxImg.parentElement) { 
                 closeLightbox();
             }
         });
 
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && lightbox.classList.contains('active')) {
-                closeLightbox();
+            if (lightbox.classList.contains('active')) {
+                if (e.key === 'Escape') {
+                    closeLightbox();
+                } else if (e.key === 'ArrowLeft' && document.dir === 'rtl') { // Left arrow for next in RTL
+                    navigateLightbox('next');
+                } else if (e.key === 'ArrowRight' && document.dir === 'rtl') { // Right arrow for previous in RTL
+                    navigateLightbox('prev');
+                } else if (e.key === 'ArrowLeft' && document.dir !== 'rtl') { // Left arrow for previous in LTR
+                    navigateLightbox('prev');
+                } else if (e.key === 'ArrowRight' && document.dir !== 'rtl') { // Right arrow for next in LTR
+                    navigateLightbox('next');
+                }
             }
         });
+
+        // Swipe functionality for Lightbox
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        lightbox.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        }, { passive: true }); // Use passive to avoid blocking scrolling
+
+        lightbox.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleGesture();
+        }, { passive: true });
+
+        function handleGesture() {
+            const swipeThreshold = 50; // Minimum distance for a swipe
+
+            if (Math.abs(touchEndX - touchStartX) < swipeThreshold) {
+                return; // Not a swipe
+            }
+
+            if (document.dir === 'rtl') {
+                if (touchEndX < touchStartX) { // Swiped left in RTL = Next image
+                    navigateLightbox('next');
+                } else if (touchEndX > touchStartX) { // Swiped right in RTL = Previous image
+                    navigateLightbox('prev');
+                }
+            } else { // LTR
+                if (touchEndX < touchStartX) { // Swiped left in LTR = Next image
+                    navigateLightbox('next');
+                } else if (touchEndX > touchStartX) { // Swiped right in LTR = Previous image
+                    navigateLightbox('prev');
+                }
+            }
+        }
+
 
         window.addEventListener('scroll', () => {
             if (window.scrollY > 300) backToTopBtn.classList.add('show');
@@ -606,12 +709,12 @@
 
         backToTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 
-        // **Carousel Drag & Snap Logic**
+        
         document.querySelectorAll('.carousel-wrapper').forEach(wrapper => {
             let isDown = false;
             let startX;
             let scrollLeft;
-            const itemWidth = 320 + 25; // item width + gap (kept original itemWidth as it's used for scrolling logic)
+            const itemWidth = 320 + 25; // item width + gap
 
             wrapper.addEventListener('mousedown', (e) => {
                 isDown = true;
@@ -631,7 +734,7 @@
                 if (!isDown) return;
                 e.preventDefault();
                 const x = e.pageX - wrapper.offsetLeft;
-                const walk = (x - startX) * 2; // scroll-fast
+                const walk = (x - startX) * 2; 
                 wrapper.scrollLeft = scrollLeft - walk;
             });
             
@@ -640,20 +743,18 @@
                 isDown = true;
                 startX = e.touches[0].pageX - wrapper.offsetLeft;
                 scrollLeft = wrapper.scrollLeft;
-            });
+            }, { passive: true });
             wrapper.addEventListener('touchend', () => {
                 isDown = false;
-            });
+            }, { passive: true });
             wrapper.addEventListener('touchmove', (e) => {
                 if (!isDown) return;
                 const x = e.touches[0].pageX - wrapper.offsetLeft;
                 const walk = (x - startX) * 2;
                 wrapper.scrollLeft = scrollLeft - walk;
-            });
+            }, { passive: true });
             
-            // Snap logic on scroll end
             wrapper.addEventListener('scroll', () => {
-                // Update active item based on center of view
                 const items = Array.from(wrapper.children);
                 const containerCenter = wrapper.scrollLeft + wrapper.offsetWidth / 2;
                 items.forEach(item => {
@@ -667,41 +768,58 @@
                 });
             });
             
-            // Navigate with buttons
             const container = wrapper.closest('.carousel-container');
-            const prevBtn = container.querySelector('.prev-carousel-btn');
+
+            const prevBtn = container.querySelector('.prev-carousel-btn'); 
             const nextBtn = container.querySelector('.next-carousel-btn');
 
             if (prevBtn) {
                 prevBtn.addEventListener('click', () => {
-                    // Adjusted itemWidth for square items, assuming it's consistent
                     const currentItemWidth = wrapper.querySelector('.gallery-item')?.offsetWidth || 320;
-                    const scrollAmount = currentItemWidth + 25; // item width + gap
+                    const scrollAmount = currentItemWidth + 25; 
                     const currentScroll = wrapper.scrollLeft;
-                    const newScroll = currentScroll + scrollAmount;
+                    const newScroll = currentScroll - scrollAmount; 
                     wrapper.scrollTo({ left: newScroll, behavior: 'smooth' });
                 });
             }
 
             if (nextBtn) {
                 nextBtn.addEventListener('click', () => {
-                    // Adjusted itemWidth for square items
                     const currentItemWidth = wrapper.querySelector('.gallery-item')?.offsetWidth || 320;
-                    const scrollAmount = currentItemWidth + 25; // item width + gap
+                    const scrollAmount = currentItemWidth + 25; 
                     const currentScroll = wrapper.scrollLeft;
-                    const newScroll = currentScroll - scrollAmount;
+                    const newScroll = currentScroll + scrollAmount; 
                     wrapper.scrollTo({ left: newScroll, behavior: 'smooth' });
                 });
             }
-
-            // Initial update
-            setTimeout(() => {
-                const items = Array.from(wrapper.children);
-                if (items.length > 0) {
-                    items[0].classList.add('active-item');
-                }
-            }, 500);
         });
+
+        function initializeCarouselsCenter() {
+            document.querySelectorAll('.carousel-wrapper').forEach(wrapper => {
+                const items = Array.from(wrapper.children);
+                if (items.length === 0) return;
+
+                const wrapperWidth = wrapper.offsetWidth;
+                const totalContentWidth = wrapper.scrollWidth;
+
+                // This logic is for RTL. 0 is the far right.
+                // To center, we want to scroll to the middle of the available scroll range.
+                // The maximum scrollLeft value is scrollWidth - offsetWidth.
+                // So, the center of the scrollable area is (scrollWidth - offsetWidth) / 2.
+                const centerScrollPosition = (totalContentWidth - wrapperWidth) / 2;
+                wrapper.scrollTo({ left: centerScrollPosition, behavior: 'instant' }); // Use 'instant' for immediate centering on load
+
+                // For the 'active-item' class, we can set the initially centered item
+                // This will be approximately the middle item.
+                const middleItemIndex = Math.floor(items.length / 2);
+                if (items[middleItemIndex]) {
+                    // Remove active from all first
+                    items.forEach(item => item.classList.remove('active-item'));
+                    // Add active to the middle one
+                    items[middleItemIndex].classList.add('active-item');
+                }
+            });
+        }
     });
 </script>
 </body>
