@@ -469,6 +469,25 @@
         100% { opacity: 0.7; }
     }
 </style>
+
+<script>
+  // تعطيل استعادة التمرير التلقائية
+  if ('scrollRestoration' in history) {
+    history.scrollRestoration = 'manual';
+  }
+  // إجبار الصفحة للتمرير للأعلى قبل الإعادة تحميل أو الإغلاق
+  window.onbeforeunload = function () {
+    window.scrollTo(0, 0);
+  };
+  // التعامل مع "Back/Forward Cache" لضمان التمرير للأعلى عند العودة للصفحة من الكاش
+  window.addEventListener('pageshow', (event) => {
+    // تحقق مما إذا كانت الصفحة قادمة من BFCache
+    if (event.persisted) {
+      window.scrollTo(0, 0);
+    }
+  });
+</script>
+
 </head>
 <body>
 
@@ -614,20 +633,14 @@
     <i class="fas fa-chevron-up"></i>
 </button>
 
-<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-<script>
-    // *************** 1. إيقاف استعادة موضع التمرير التلقائي في المتصفح ***************
-    // هذا الكود يجب أن يكون أول ما يتم تنفيذه في ملف الـ JavaScript الخاص بك.
-    if ('scrollRestoration' in history) {
-        history.scrollRestoration = 'manual';
-    }
-
-    // *************** 2. فرض التمرير إلى الأعلى عند التحميل ***************
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js" defer></script>
+<script defer>
+    // *************** فرض التمرير إلى الأعلى عند التحميل ***************
     // هذا يضمن العودة لبداية الصفحة (0,0) أول ما الصفحة تكتمل تحميلها.
+    // تم تغيير behavior: 'instant' إلى 'auto' لتحسين التوافقية.
     window.addEventListener('load', () => {
-        window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+        window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
         // إذا كان الـ preloader لا يزال مرئياً، فهذه الدالة ستضمن إخفاءه وتهيئة الكاروسيلات.
-        // في معظم الحالات، ستكون الدالة قد تم تشغيلها بالفعل، ولكن هذا يضمن التغطية.
         const preloader = document.getElementById('preloader');
         if (preloader && !preloader.classList.contains('hidden')) {
             hidePreloaderAndInitializeCarousels();
@@ -743,14 +756,6 @@
                     hidePreloaderAndInitializeCarousels();
                 }
             }, MAX_PRELOADER_DISPLAY_TIME);
-
-            // نعدل منطق تتبع تحميل الصور ليشمل الصور التي يتم تحميلها كسولاً
-            // يمكننا اعتبار أن الـ preloader سيختفي بعد أن تبدأ أول مجموعة من الصور بالتحميل وتكون الصفحة جاهزة للتفاعل.
-            // أو يمكننا تتبع تحميل كل صورة يتم تحميلها بواسطة Intersection Observer
-            // هذا الجزء سيتم استبداله بمنطق الـ Intersection Observer أعلاه
-            // للتأكد من أن الـ preloader يختفي بعد تحميل الصور المرئية الأولى،
-            // يمكننا استخدام عداد للصور التي تظهر في أول viewport أو بعد عدد معين من الصور
-            // حاليًا، الـ preloaderTimeout هو الضمان لإخفاء الـ preloader بعد فترة معينة.
         }
 
         // وظائف اللايت بوكس (عرض الصورة المكبرة)
@@ -902,7 +907,6 @@
         }
 
         // زر العودة للأعلى (جعله ظاهرًا دائمًا)
-        // تمت إزالة منطق show/hide بواسطة السكرول، الزر الآن ثابت في CSS
         backToTopBtn.addEventListener('click', () => {
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
@@ -1026,7 +1030,8 @@
             if (!active) return; // لا تفعل شيئاً إذا لم يتم العثور على أي عناصر
 
             // استخدام scrollIntoView لتوسيط العنصر بدقة في المنتصف الأفقي
-            active.scrollIntoView({ behavior: 'instant', inline: 'center' });
+            // تم تغيير behavior: 'instant' إلى 'auto' لتحسين التوافقية
+            active.scrollIntoView({ behavior: 'auto', inline: 'center' });
 
             // بعد التمرير الفوري، قم بتشغيل حدث 'scroll' يدوياً
             // هذا يضمن أن دالة updateActiveItem() تقوم بتحديث الفئة 'active-item' فوراً
