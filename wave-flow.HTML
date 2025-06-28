@@ -214,14 +214,14 @@
         width: 100%;
         height: 100%;
         object-fit: cover;
-        filter: blur(20px); /* Initial blur for placeholder */
+        /* Original: filter: blur(20px); -- Removed blur for immediate display */
         transition: transform 0.6s ease, filter 0.5s ease;
         filter: brightness(0.9);
     }
 
-    .gallery-item img.loaded {
-        filter: none; /* Remove blur once loaded */
-    }
+    /* .gallery-item img.loaded { -- This class is no longer needed with direct src */
+        /* filter: none; */
+    /* } */
 
     .gallery-item:hover img {
         transform: scale(1.05);
@@ -456,7 +456,7 @@
         }
     }
 
-    /* Skeleton Loader CSS (Basic) */
+    /* Skeleton Loader CSS (Basic) -- No longer directly used but kept for reference if needed */
     .skeleton-loader {
         background-color: rgba(255, 255, 255, 0.1);
         border-radius: 20px;
@@ -472,33 +472,24 @@
 
 <script>
   // تعطيل استعادة التمرير التلقائية
-  // هذا سيمنع المتصفح من محاولة استعادة موضع التمرير السابق.
   if ('scrollRestoration' in history) {
     history.scrollRestoration = 'manual';
   }
 
   // إجبار الصفحة للتمرير للأعلى قبل الإعادة تحميل أو الإغلاق.
-  // يتم استدعاؤه فورًا عند محاولة المستخدم مغادرة الصفحة.
   window.onbeforeunload = function () {
     window.scrollTo(0, 0);
   };
 
   // التعامل مع "Back/Forward Cache" (bfcache)
-  // يضمن أن الصفحة تعود للأعلى حتى عند العودة إليها من الكاش السريع للمتصفح.
   window.addEventListener('pageshow', (event) => {
-    // تحقق مما إذا كانت الصفحة قادمة من BFCache.
-    // إذا كانت كذلك، نؤكد التمرير للأعلى.
     if (event.persisted) {
       window.scrollTo(0, 0);
     }
-    // في جميع الأحوال (حتى لو لم تكن من bfcache)، نؤكد التمرير للأعلى
-    // لضمان أن المستخدم يرى بداية الصفحة دائمًا.
-    window.scrollTo(0, 0);
+    window.scrollTo(0, 0); // تأكيد التمرير للأعلى في كل الأحوال عند pageshow
   });
 
   // إضافة تمرير فوري للصفحة للأعلى بمجرد تحميل DOM
-  // هذا يمكن أن يساعد في معالجة الحالات التي لا تغطيها الأحداث الأخرى
-  // ويوفر تجربة سلسة للمستخدم.
   document.addEventListener('DOMContentLoaded', function() {
     window.scrollTo(0, 0);
   });
@@ -522,64 +513,49 @@
     <div class="carousel-container design-gallery">
         <div class="carousel-wrapper" id="design-carousel">
             <div class="gallery-item" data-aos="zoom-in" data-aos-delay="100">
-                <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-src="https://imagizer.imageshack.com/img922/7891/lmH7dS.png" alt="تصميم إبداعي">
-                <div class="skeleton-loader"></div>
-            </div>
+                <img src="https://imagizer.imageshack.com/img922/7891/lmH7dS.png" alt="تصميم إبداعي">
+                </div>
             <div class="gallery-item" data-aos="zoom-in" data-aos-delay="200">
-                <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-src="https://imagizer.imageshack.com/img923/8852/UG4kdA.jpg" alt="عمل فني">
-                <div class="skeleton-loader"></div>
+                <img src="https://imagizer.imageshack.com/img923/8852/UG4kdA.jpg" alt="عمل فني">
             </div>
             <div class="gallery-item" data-aos="zoom-in" data-aos-delay="300">
-                <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-src="https://imagizer.imageshack.com/img922/5889/8YPapb.jpg" alt="تصوير احترافي">
-                <div class="skeleton-loader"></div>
+                <img src="https://imagizer.imageshack.com/img922/5889/8YPapb.jpg" alt="تصوير احترافي">
             </div>
             <div class="gallery-item" data-aos="zoom-in" data-aos-delay="400">
-                <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-src="https://imagizer.imageshack.com/img923/1641/XCOcQz.png" alt="فن بصري">
-                <div class="skeleton-loader"></div>
+                <img src="https://imagizer.imageshack.com/img923/1641/XCOcQz.png" alt="فن بصري">
             </div>
             <div class="gallery-item" data-aos="zoom-in" data-aos-delay="500">
-                <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-src="https://imagizer.imageshack.com/img923/6105/zyeIf9.jpg" alt="تصميم جرافيك">
-                <div class="skeleton-loader"></div>
+                <img src="https://imagizer.imageshack.com/img923/6105/zyeIf9.jpg" alt="تصميم جرافيك">
             </div>
             <div class="gallery-item" data-aos="zoom-in" data-aos-delay="550">
-                <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-src="https://imagizer.imageshack.com/img924/4230/dyYPPU.jpg" alt="تصميم إبداعي">
-                <div class="skeleton-loader"></div>
+                <img src="https://imagizer.imageshack.com/img924/4230/dyYPPU.jpg" alt="تصميم إبداعي">
             </div>
             <div class="gallery-item" data-aos="zoom-in" data-aos-delay="600">
-                <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-src="https://imagizer.imageshack.com/img924/2280/56psLg.png" alt="إبداع فني">
-                <div class="skeleton-loader"></div>
+                <img src="https://imagizer.imageshack.com/img924/2280/56psLg.png" alt="إبداع فني">
             </div>
             <div class="gallery-item" data-aos="zoom-in" data-aos-delay="700">
-                <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-src="https://imagizer.imageshack.com/img922/2249/u8HFhr.jpg" alt="لوحة فنية">
-                <div class="skeleton-loader"></div>
+                <img src="https://imagizer.imageshack.com/img922/2249/u8HFhr.jpg" alt="لوحة فنية">
             </div>
             <div class="gallery-item" data-aos="zoom-in" data-aos-delay="800">
-                <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-src="https://imagizer.imageshack.com/img923/4964/dWmp05.jpg" alt="فن تصويري">
-                <div class="skeleton-loader"></div>
+                <img src="https://imagizer.imageshack.com/img923/4964/dWmp05.jpg" alt="فن تصويري">
             </div>
             <div class="gallery-item" data-aos="zoom-in" data-aos-delay="900">
-                <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-src="https://imagizer.imageshack.com/img923/9679/r2P937.png" alt="تصميم جرافيكي">
-                <div class="skeleton-loader"></div>
+                <img src="https://imagizer.imageshack.com/img923/9679/r2P937.png" alt="تصميم جرافيكي">
             </div>
             <div class="gallery-item" data-aos="zoom-in" data-aos-delay="1000">
-                <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-src="https://imagizer.imageshack.com/img923/5765/DfLAlA.jpg" alt="لوحة فنية">
-                <div class="skeleton-loader"></div>
+                <img src="https://imagizer.imageshack.com/img923/5765/DfLAlA.jpg" alt="لوحة فنية">
             </div>
             <div class="gallery-item" data-aos="zoom-in" data-aos-delay="1100">
-                <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-src="https://imagizer.imageshack.com/img924/6291/dpaxGi.jpg" alt="تصميم جرافيكي">
-                <div class="skeleton-loader"></div>
+                <img src="https://imagizer.imageshack.com/img924/6291/dpaxGi.jpg" alt="تصميم جرافيكي">
             </div>
             <div class="gallery-item" data-aos="zoom-in" data-aos-delay="1200">
-                <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-src="https://imagizer.imageshack.com/img923/9674/Np64vR.jpg" alt="تصميم إبداعي">
-                <div class="skeleton-loader"></div>
+                <img src="https://imagizer.imageshack.com/img923/9674/Np64vR.jpg" alt="تصميم إبداعي">
             </div>
             <div class="gallery-item" data-aos="zoom-in" data-aos-delay="1300">
-                <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-src="https://imagizer.imageshack.com/img924/6587/urrLyW.png" alt="تصميم إبداعي">
-                <div class="skeleton-loader"></div>
+                <img src="https://imagizer.imageshack.com/img924/6587/urrLyW.png" alt="تصميم إبداعي">
             </div>
             <div class="gallery-item" data-aos="zoom-in" data-aos-delay="1400">
-                <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-src="https://imagizer.imageshack.com/img922/1403/FqKy4S.jpg" alt="تصميم إبداعي">
-                <div class="skeleton-loader"></div>
+                <img src="https://imagizer.imageshack.com/img922/1403/FqKy4S.jpg" alt="تصميم إبداعي">
             </div>
         </div>
         <button class="carousel-nav-btn prev-carousel-btn" aria-label="السابق"><i class="fas fa-chevron-right"></i></button>
@@ -595,12 +571,10 @@
     <div class="carousel-container logo-section">
         <div class="carousel-wrapper" id="logo-carousel">
             <div class="gallery-item" data-aos="zoom-in" data-aos-delay="100">
-                <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-src="https://imagizer.imageshack.com/img923/3629/xdL0C3.png" alt="لوجو شركة">
-                <div class="skeleton-loader"></div>
+                <img src="https://imagizer.imageshack.com/img923/3629/xdL0C3.png" alt="لوجو شركة">
             </div>
             <div class="gallery-item" data-aos="zoom-in" data-aos-delay="200">
-                <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-src="https://imagizer.imageshack.com/img922/1505/n19fSr.png" alt="هوية بصرية">
-                <div class="skeleton-loader"></div>
+                <img src="https://imagizer.imageshack.com/img922/1505/n19fSr.png" alt="هوية بصرية">
             </div>
         </div>
         <button class="carousel-nav-btn prev-carousel-btn" aria-label="السابق"><i class="fas fa-chevron-right"></i></button>
@@ -616,12 +590,10 @@
     <div class="carousel-container ads-section">
         <div class="carousel-wrapper" id="ads-carousel">
             <div class="gallery-item" data-aos="zoom-in" data-aos-delay="100">
-                <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-src="https://imagizer.imageshack.com/img923/2671/TpJi7G.png" alt="إعلان مبتكر">
-                <div class="skeleton-loader"></div>
+                <img src="https://imagizer.imageshack.com/img923/2671/TpJi7G.png" alt="إعلان مبتكر">
             </div>
             <div class="gallery-item" data-aos="zoom-in" data-aos-delay="200">
-                <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-src="https://imagizer.imageshack.com/img924/4301/98Pd8q.png" alt="تصميم إعلاني">
-                <div class="skeleton-loader"></div>
+                <img src="https://imagizer.imageshack.com/img924/4301/98Pd8q.png" alt="تصميم إعلاني">
             </div>
         </div>
         <button class="carousel-nav-btn prev-carousel-btn" aria-label="السابق"><i class="fas fa-chevron-right"></i></button>
@@ -687,7 +659,7 @@
         const backToTopBtn = document.querySelector('.back-to-top');
 
         let currentImageIndex = 0;
-        let activeGalleryItems = [];
+        let allGalleryImages = []; // لجمع كل مسارات الصور من جميع الكاروسيلات
         let lastFocusedElement = null; // لإدارة التركيز في اللايت بوكس
 
         // التحقق من وجود العناصر الأساسية لمنع الأخطاء
@@ -695,71 +667,31 @@
             console.error('One or more essential elements for the page or lightbox are missing. Please check your HTML structure.');
             return;
         }
-
-        // *************** Lazy-load متطور بالـ Intersection Observer ***************
-        const io = new IntersectionObserver((entries, observer) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const img = entry.target;
-                    const dataSrc = img.dataset.src;
-                    if (dataSrc) {
-                        img.src = dataSrc; // حمل الصورة
-                        img.onload = () => {
-                            img.classList.add('loaded'); // أضف الكلاس لإزالة التمويه
-                            // إزالة الـ skeleton loader بعد تحميل الصورة
-                            const skeleton = img.nextElementSibling;
-                            if (skeleton && skeleton.classList.contains('skeleton-loader')) {
-                                skeleton.remove();
-                            }
-                        };
-                        img.onerror = () => {
-                             // Fallback for image load error
-                             img.src = 'https://via.placeholder.com/320x320?text=Error';
-                             img.classList.add('loaded');
-                             const skeleton = img.nextElementSibling;
-                             if (skeleton && skeleton.classList.contains('skeleton-loader')) {
-                                 skeleton.remove();
-                             }
-                        };
-                    }
-                    observer.unobserve(img); // توقف عن مراقبة الصورة بعد تحميلها
-                }
-            });
-        }, { rootMargin: '200px' }); // حمل الصور عندما تكون على بعد 200 بكسل من الشاشة
-
-        // ابدأ بمراقبة جميع الصور التي تحتوي على data-src
-        document.querySelectorAll('img[data-src]').forEach(img => {
-            // أضف عنصر skeleton loader كأول طفل داخل gallery-item
-            const parent = img.parentElement;
-            if (parent && parent.classList.contains('gallery-item')) {
-                const skeleton = document.createElement('div');
-                skeleton.classList.add('skeleton-loader');
-                skeleton.style.position = 'absolute';
-                skeleton.style.top = '0';
-                skeleton.style.left = '0';
-                skeleton.style.width = '100%';
-                skeleton.style.height = '100%';
-                skeleton.style.zIndex = '1';
-                parent.prepend(skeleton);
-            }
-            io.observe(img);
+        
+        // جمع مسارات جميع الصور من عناصر المعرض
+        document.querySelectorAll('.gallery-item img').forEach(img => {
+            allGalleryImages.push(img.src);
         });
-        // **************************************************************************
 
-        // منطق تحميل الصور لإخفاء شاشة التحميل (معدل ليأخذ في الاعتبار Intersection Observer)
-        let totalLazyLoadImages = document.querySelectorAll('img[data-src]').length;
-        let loadedLazyLoadImages = 0;
-
+        // *************** وظيفة إخفاء Preloader وتهيئة الكاروسيلات ***************
+        // يتم استدعاؤها بعد تحميل جميع الصور أو بعد مهلة زمنية
         function hidePreloaderAndInitializeCarousels() {
             preloader.classList.add('hidden');
             document.body.style.overflow = 'auto'; // إعادة تمكين التمرير للصفحة
+            // تهيئة وتوسيط الكاروسيلات بعد إخفاء الـ preloader
             document.querySelectorAll('.carousel-wrapper').forEach(wrapper => {
                 centerActiveItemOnLoad(wrapper);
+                // تفعيل منطق التحديث للعنصر النشط فورًا بعد التوسيط الأولي
+                wrapper.dispatchEvent(new Event('scroll'));
             });
         }
 
-        // إذا لم تكن هناك صور للتحميل الكسول، أخفِ الـ preloader فوراً.
-        if (totalLazyLoadImages === 0) {
+        // منطق تحميل الصور لإخفاء شاشة التحميل (معدل ليأخذ في الاعتبار Intersection Observer)
+        // بما أننا أزلنا الـ lazy loading، الآن سننتظر تحميل جميع الصور مباشرة
+        let loadedImagesCount = 0;
+        const totalImagesInGallery = document.querySelectorAll('.gallery-item img').length;
+
+        if (totalImagesInGallery === 0) {
             hidePreloaderAndInitializeCarousels();
         } else {
             document.body.style.overflow = 'hidden'; // منع التمرير أثناء التحميل
@@ -772,35 +704,59 @@
                     hidePreloaderAndInitializeCarousels();
                 }
             }, MAX_PRELOADER_DISPLAY_TIME);
+
+            document.querySelectorAll('.gallery-item img').forEach(img => {
+                if (img.complete) { // إذا كانت الصورة محملة بالفعل (من الكاش)
+                    loadedImagesCount++;
+                } else {
+                    img.addEventListener('load', () => {
+                        loadedImagesCount++;
+                        if (loadedImagesCount === totalImagesInGallery) {
+                            clearTimeout(preloaderTimeout); // إلغاء المؤقت إذا انتهى التحميل قبل المهلة
+                            hidePreloaderAndInitializeCarousels();
+                        }
+                    });
+                    img.addEventListener('error', () => { // التعامل مع الأخطاء أيضًا
+                        loadedImagesCount++;
+                        if (loadedImagesCount === totalImagesInGallery) {
+                            clearTimeout(preloaderTimeout);
+                            hidePreloaderAndInitializeCarousels();
+                        }
+                    });
+                }
+            });
+
+            // التحقق مرة أخرى إذا كانت جميع الصور قد تم تحميلها بالفعل في DOMContentLoaded
+            if (loadedImagesCount === totalImagesInGallery) {
+                clearTimeout(preloaderTimeout);
+                hidePreloaderAndInitializeCarousels();
+            }
         }
+        // **************************************************************************
+
 
         // وظائف اللايت بوكس (عرض الصورة المكبرة)
         allGalleryItems.forEach((item) => {
             item.addEventListener('click', function() {
                 lastFocusedElement = this; // حفظ العنصر الذي تم النقر عليه
-                const parentWrapper = this.closest('.carousel-wrapper');
-                activeGalleryItems = Array.from(parentWrapper.querySelectorAll('.gallery-item img'));
-
                 const img = this.querySelector('img');
-                if (img) { // يجب أن نتحقق من وجود img
-                    // استخدم data-src إذا كان موجوداً، وإلا استخدم src
-                    const imageUrl = img.dataset.src || img.src;
+                if (img) {
+                    const imageUrl = img.src;
                     const imageAlt = img.alt || 'صورة مكبرة';
-                    currentImageIndex = activeGalleryItems.findIndex(image => (image.dataset.src || image.src) === imageUrl);
+                    currentImageIndex = allGalleryImages.indexOf(imageUrl); // تحديد الفهرس من القائمة الشاملة
                     showLightboxImage(currentImageIndex, imageAlt);
                 }
             });
         });
 
         function showLightboxImage(index, altText) {
-            if (index < 0 || index >= activeGalleryItems.length) {
+            if (index < 0 || index >= allGalleryImages.length) {
                 return;
             }
 
             currentImageIndex = index;
-            const targetImgElement = activeGalleryItems[currentImageIndex];
-            const imageUrl = targetImgElement.dataset.src || targetImgElement.src;
-            const imageAlt = altText || targetImgElement.alt || 'صورة مكبرة';
+            const imageUrl = allGalleryImages[currentImageIndex];
+            const imageAlt = altText || 'صورة مكبرة'; // يمكن تحديث هذا لاحقًا ليأخذ alt الصحيح من الصورة الأصلية
 
             lightboxSpinner.style.display = 'block';
             lightboxImg.classList.add('loading');
@@ -833,11 +789,11 @@
 
         function navigateLightbox(direction) {
             if (direction === 'prev') {
-                currentImageIndex = (currentImageIndex - 1 + activeGalleryItems.length) % activeGalleryItems.length;
+                currentImageIndex = (currentImageIndex - 1 + allGalleryImages.length) % allGalleryImages.length;
             } else if (direction === 'next') {
-                currentImageIndex = (currentImageIndex + 1) % activeGalleryItems.length;
+                currentImageIndex = (currentImageIndex + 1) % allGalleryImages.length;
             }
-            showLightboxImage(currentImageIndex); // لا داعي لتمرير AltText هنا، سيتم الحصول عليه من الصورة النشطة
+            showLightboxImage(currentImageIndex);
         }
 
         lightboxPrevBtn.addEventListener('click', () => navigateLightbox('prev'));
@@ -1046,15 +1002,7 @@
             if (!active) return; // لا تفعل شيئاً إذا لم يتم العثور على أي عناصر
 
             // استخدام scrollIntoView لتوسيط العنصر بدقة في المنتصف الأفقي
-            // تم تغيير behavior: 'instant' إلى 'auto' لتحسين التوافقية
             active.scrollIntoView({ behavior: 'auto', inline: 'center' });
-
-            // بعد التمرير الفوري، قم بتشغيل حدث 'scroll' يدوياً
-            // هذا يضمن أن دالة updateActiveItem() تقوم بتحديث الفئة 'active-item' فوراً
-            // (تأخير بسيط لضمان اكتمال عملية scrollIntoView أولاً)
-            setTimeout(() => {
-                wrapper.dispatchEvent(new Event('scroll'));
-            }, 50);
         }
     });
 </script>
