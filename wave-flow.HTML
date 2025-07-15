@@ -436,25 +436,47 @@
         }
     }
 
-    @media (max-width: 480px) {
-        body { padding: 10px; }
-        .section-title-header h2 { font-size: 2.5rem; }
-        .section-title-header h2::after { bottom: -10px; }
-        .divider-title { font-size: 1.8rem; padding: 0 10px; }
-        .gallery-item {
-            width: 85vw; /* استخدام عرض إطار العرض لتحسين الاستجابة */
-            max-width: 300px;
-            height: auto;
-            aspect-ratio: 1 / 1; /* الحفاظ على نسبة العرض إلى العرض المربعة */
-        }
-        .carousel-container {
-            padding-bottom: 20px;
-        }
-        .carousel-nav-btn { display: none; } /* إخفاء أزرار التنقل الرئيسية في العرض الصغير */
-        .carousel-wrapper {
-            justify-content: flex-start;
-        }
+   @media (max-width: 480px) {
+    body {
+        padding: 10px;
     }
+    .section-title-header h2 {
+        font-size: 2.5rem;
+    }
+    .section-title-header h2::after {
+        bottom: -10px;
+    }
+    .divider-title {
+        font-size: 1.8rem;
+        padding: 0 10px;
+    }
+    .gallery-item {
+        width: 85vw; /* عرض مرن */
+        max-width: 300px;
+        height: auto;
+        aspect-ratio: 1 / 1;
+    }
+    .carousel-container {
+        padding-bottom: 20px;
+    }
+    /* خليك تعرض الأسهم وحجمها مناسب */
+    .carousel-nav-btn {
+        display: flex !important;
+        width: 40px;
+        height: 40px;
+        font-size: 1.2rem;
+        opacity: 0.8;
+        z-index: 20; /* فوق الصور */
+    }
+    /* إذا بدك تحركها شوي بعيد عن الحواف: */
+    .prev-carousel-btn { right: 5px; }
+    .next-carousel-btn { left: 5px; }
+
+    .carousel-wrapper {
+        justify-content: flex-start;
+    }
+}
+
 
     /* Skeleton Loader CSS (Basic) -- No longer directly used but kept for reference if needed */
     .skeleton-loader {
@@ -557,6 +579,9 @@
             <div class="gallery-item" data-aos="zoom-in" data-aos-delay="1400">
                 <img src="https://imagizer.imageshack.com/img922/1403/FqKy4S.jpg" alt="تصميم إبداعي">
             </div>
+            <div class="gallery-item" data-aos="zoom-in" data-aos-delay="1500">
+                <img src="https://imagizer.imageshack.com/img924/1773/zNcbcQ.jpg" alt="تصميم إبداعي">
+            </div>
         </div>
         <button class="carousel-nav-btn prev-carousel-btn" aria-label="السابق"><i class="fas fa-chevron-right"></i></button>
         <button class="carousel-nav-btn next-carousel-btn" aria-label="التالي"><i class="fas fa-chevron-left"></i></button>
@@ -594,6 +619,9 @@
             </div>
             <div class="gallery-item" data-aos="zoom-in" data-aos-delay="200">
                 <img src="https://imagizer.imageshack.com/img924/4301/98Pd8q.png" alt="تصميم إعلاني">
+            </div>
+            <div class="gallery-item" data-aos="zoom-in" data-aos-delay="300">
+                <img src="https://i.ibb.co/spcCCY7Y/2121.png" alt="إعلان مبتكر">
             </div>
         </div>
         <button class="carousel-nav-btn prev-carousel-btn" aria-label="السابق"><i class="fas fa-chevron-right"></i></button>
